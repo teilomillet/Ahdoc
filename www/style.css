@@ -1,0 +1,180 @@
+/* Reset */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+  
+  /* Header */
+  header {
+    background-color: #eae4da;
+    height: 80px;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 9999;
+  }
+  
+  /* Utilisation de la police */
+  body {
+    font-family: 'Roboto Mono', sans-serif;
+    background-color: #eae4da;
+  }
+  
+  
+  .container {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  
+  .logo img {
+    height: 90px;
+  }
+  
+  nav ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+  }
+  
+  nav li {
+    margin-left: 25px;
+  }
+  
+  nav a {
+    display: block;
+    text-decoration: none;
+    color: #333333;
+    font-weight: bold;
+    padding: 10px 15px;
+    border-radius: 3px;
+    transition: background-color 0.3s ease;
+  }
+
+  .right-align {
+    
+    color: #666;
+    text-align: right;
+    padding: 40px;
+    position: relative;
+    right: 0;
+    bottom: 0;
+    width: 100%;
+    display: inline-block;
+    padding-left: 400px;
+  
+
+
+  }
+  
+  .container2 {
+    max-width: 1900px;
+    position: absolute;
+    bottom: 0;
+    margin-left: 800px;
+   
+
+  }
+  
+  a {
+    color: #333333;
+    text-decoration: none;
+  }
+  
+  a:hover {
+    text-decoration: underline;
+  }
+  
+  .input-box {
+    display: inline-block;
+    padding: 20px;
+    font-family: 'Roboto Mono', sans-serif;
+    font-size: 16px;
+    color: #333333;
+  }
+
+  
+  .form-container {
+    margin-left: 200px;
+    margin-bottom: 50px;
+    margin-top: 150px;
+    
+  }
+
+  .pixel img {
+    
+    position: absolute;
+    height: 700px;
+    bottom: 0;
+    
+   
+    
+  }
+
+
+  .chat-box {
+    width: 600px;
+    height: 500px;
+    border: 3px solid #333333;
+    padding: 20px;
+    box-sizing: border-box;
+    border-radius: 12px;
+    font-family: 'Roboto Mono', sans-serif;
+    margin-left: 200px;
+    margin-top: 20px;
+    position: absolute;
+    
+  }
+  
+  .chat-history {
+    height: 400px;
+    overflow-y: auto;
+  }
+  
+  .message {
+    margin-bottom: 20px;
+  }
+  
+  .sender {
+    font-weight: bold;
+    margin-bottom: 5px;
+    font-family: 'Roboto Mono', sans-serif;
+  }
+  
+  .chat-input {
+    display: flex;
+    align-items: left;
+  }
+  
+  .chat-input input {
+    flex: 1;
+    margin-right: 20px;
+    padding: 5px;
+    box-sizing: border-box;
+  }
+  
+  .chat-input button {
+    padding-left: 20px;
+    padding-right: 20px;
+    padding-bottom: 7px;
+    padding-top: 7px;
+    background-color: #e37047;
+    color: #333333;
+    border: 3px solid #333333;
+    border-radius: 12px;
+    cursor: pointer;
+    font-family: 'Roboto Mono', sans-serif;;
+  }
+  
+  .chat-input button:hover {
+    background-color: #afc4e8;
+  }
+
+
+
+  
