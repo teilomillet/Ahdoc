@@ -18,6 +18,7 @@ from langchain.embeddings import OpenAIEmbeddings
 from langchain.text_splitter import RecursiveCharacterTextSplitter
 from langchain.llms import OpenAI
 from langchain.chains import VectorDBQA
+from langchain.callbacks import get_openai_callback
 from langchain.document_loaders import TextLoader, UnstructuredPDFLoader, PyPDFLoader
 from langchain.docstore.document import Document
 from langchain.document_loaders.base import BaseLoader
@@ -40,7 +41,7 @@ class FileUpload(BaseModel):
     size: int
 
 # Background task to indicate that the file has been received
-def process_file_upload(upload: FileUpload):
+def process_file_upload(upload: FileUpload) -> None:
     print(f"Received file {upload.name} of size {upload.size} bytes")
 
 def load_pdf():
@@ -63,8 +64,10 @@ def load_pdf():
 
 # Endpoint to upload a PDF file
 @app.post("/upload")
-async def upload_file(background_tasks: BackgroundTasks, file: UploadFile = File(...)):
+async def upload_file(background_tasks: BackgroundTasks, file: UploadFile = File(...), max_size: Optional[int] = 1000000):
     contents = await file.read()
+    if len(contents) > max_size:
+        return {"error": "File size exceeds the maximum limit."}
     with open(temp_pdf.name, mode="wb") as f:
         f.write(contents)
         background_tasks.add_task(process_file_upload, FileUpload(name=file.filename, size=len(contents)))
@@ -73,9 +76,14 @@ async def upload_file(background_tasks: BackgroundTasks, file: UploadFile = File
 # Endpoint to ask a question based on the uploaded PDF
 @app.post("/question")
 def ask_question(question: str):
-    qa = load_pdf()
-    answer = qa.run(question)
-    return {"answer": answer}
+    with get_openai_callback() as cb, open(temp_pdf.name, mode="rb") as pdf_file:
+        qa = load_pdf()
+        answer = qa.run(question)
+        print(f"Total Tokens: {cb.total_tokens}")
+        print(f"Prompt Tokens: {cb.prompt_tokens}")
+        print(f"Completion Tokens: {cb.completion_tokens}")
+        print(f"Total Cost (USD): ${cb.total_cost}")
+        return {"answer": answer}
 
 if __name__ == "__main__":
     uvicorn.run(app, host="0.0.0.0", port=8000)
