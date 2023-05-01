@@ -1,0 +1,33 @@
+body {
+    margin: 0;
+    line-height: normal;
+  }
+  
+  :root {
+    /* fonts */
+    --font-roboto-mono: "Roboto Mono";
+  
+    /* font sizes */
+    --font-size-xs: 12px;
+    --font-size-3xs: 10px;
+  
+    /* Colors */
+    --color-black: #000;
+    --color-darkslategray-100: #333;
+    --color-linen: #eae4da;
+  
+    /* Paddings */
+    --padding-mid: 17px;
+    --padding-xl: 20px;
+    --padding-3xs: 10px;
+    --padding-5xs: 8px;
+    --padding-11xl-9: 30.9px;
+    --padding-smi: 13px;
+    --padding-xs: 12px;
+    --padding-6xs: 7px;
+    --padding-3xl: 22px;
+  
+    /* border radiuses */
+    --br-xs: 12px;
+  }
+  
