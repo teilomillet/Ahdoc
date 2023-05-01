@@ -48,8 +48,24 @@
         </div>
         <div class="chat-input">
           <input type="text" placeholder="Votre message...">
-          <button>Envoyer</button>
-          
+          <button onclick="askQuestion()">Envoyer</button>
+          <script>
+            function askQuestion() {
+                const question = document.getElementById("question").value;
+                fetch("/question", {
+                    method: "POST",
+                    body: JSON.stringify({ question: question }),
+                    headers: { "Content-Type": "application/json" }
+                })
+                .then(response => response.json())
+                .then(data => {
+                    const answer = data.answer;
+                    document.getElementById("answer").innerHTML = answer;
+                })
+                .catch(error => console.error(error));
+            }
+        </script>
+
         </div>
       </div>  
     
