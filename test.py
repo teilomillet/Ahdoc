@@ -1,6 +1,5 @@
-from fastapi import FastAPI, File, UploadFile, BackgroundTasks, WebSocket, WebSocketDisconnect
+from fastapi import FastAPI, File, UploadFile, BackgroundTasks, WebSocket
 from fastapi.responses import HTMLResponse
-from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 
 import uvicorn
@@ -14,7 +13,6 @@ from io import StringIO
 from pathlib import Path
 from typing import Any, List, Optional
 from urllib.parse import urlparse
-from copy import copy
 
 from langchain.vectorstores import Chroma
 from langchain.embeddings import OpenAIEmbeddings
@@ -35,8 +33,6 @@ os.environ.update({
 
 # FastAPI app
 app = FastAPI()
-
-room_list = []
 
 # Temporary file to store the uploaded PDF
 temp_pdf = tempfile.NamedTemporaryFile(delete=False)
@@ -89,49 +85,6 @@ def ask_question(question: str):
         print(f"Completion Tokens: {cb.completion_tokens}")
         print(f"Total Cost (USD): ${cb.total_cost}")
         return {"answer": answer}
-    
-async def broadcast_to_room(question: str, except_user):
-    res = list(filter(lambda i: i['socket'] == except_user, room_list))
-    for room in room_list:
-        if except_user != room['socket']:
-            await room['socket'].send_text(json.dumps({'msg': question, 'userId': res[0]['client_id']}))
-        else:
-            # If the message is from the user, call the ask_question endpoint and send the answer back
-            answer = ask_question(question)["answer"]
-            await room['socket'].send_text(json.dumps({'msg': answer, 'userId': res[0]['client_id']}))
-
-def remove_room(except_room):
-    new_room_list = copy(room_list)
-    room_list.clear()
-    for room in new_room_list:
-        if except_room != room['socket']:
-            room_list.append(room)
-    print("room_list append - ", room_list)
-
-
-# Create websocket
-@app.websocket("/ws/{client_id}")
-async def websocket_endpoint(websocket: WebSocket, client_id: str):
-    try:
-        await websocket.accept()
-        print('connection is establish, socket - ', websocket)
-        client = {
-                'client_id': client_id,
-                'socket': websocket
-            }
-        room_list.append(client)
-        while True:
-            data = await websocket.receive_text()
-            # print(data)
-            # await websocket.send_text(data)
-            await broadcast_to_room(data, websocket)
-
-    except WebSocketDisconnect as e:
-        print('Connection closed.')
-        print(e)
-        remove_room(websocket)
-    
-
 
 if __name__ == "__main__":
     uvicorn.run(app, host="0.0.0.0", port=8000)

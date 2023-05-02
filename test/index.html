@@ -25,56 +25,43 @@
       </nav>
     </div>
   </header>
-
-	
-	<script src="test.js"></script>
-
-
 <body> 
-
     <div class="form-container">
-      <form>
+      <form enctype="multipart/form-data">
         <label for="pdfFile">Fichier PDF à résumer :</label><br>
-        <input type="file" id="pdfFile" name="pdfFile" class="input-box"><br>
-      
+        <input type="file" id="file" name="file" class="input-box"><br>
+        <button type="button" onclick="uploadFile()">Upload File</button>
       </form>
-    
     </div>
 
+
     <div class="chat-box">
-        <div class="chat-history">
-          <div class="message">
-            <div class="sender">Ahdoc</div>
-            <div class="text">Bonjour, comment puis-je vous aider ?</div>
-          </div>
-        </div>
-        <div class="chat-input">
-          <input type="text" placeholder="Votre message...">
-          <button onclick="askQuestion()">Envoyer</button>
-          <script>
-            function askQuestion() {
-                const question = document.getElementById("question").value;
-                fetch("/question", {
-                    method: "POST",
-                    body: JSON.stringify({ question: question }),
-                    headers: { "Content-Type": "application/json" }
-                })
-                .then(response => response.json())
-                .then(data => {
-                    const answer = data.answer;
-                    document.getElementById("answer").innerHTML = answer;
-                })
-                .catch(error => console.error(error));
-            }
-        </script>
 
+  <div class="chat-history">
+    <div class="message">
+      <div class="container mx-auto">
+        <h1 class="text-xl text-slate-800 font-bold">Ahdoc!</h1>
+        <div class="message-box w-full flex-col h-96 overflow-y-scroll bg-slate-500" id="question-box">
+            <!-- <div class="w-full flex justify-start">
+                <div class="box-bordered p-1 bg-slate-500 w-8/12 text-slate-100 rounded mb-1">
+                    <p>His message</p>
+                    <p>Email</p>
+                </div>
+            </div> -->
         </div>
-      </div>  
-    
+  <form id="question-form">
+    <div class="input-group mb-2 flex flex-row">
+        <input type="text" id="question"
+            class="border-0 bg-slate-800 text-slate-300 py-2 px-1 w-11/12 outline-0"
+            placeholder="Enter your message">
+        <button type="submit" class="bg-slate-900 text-slate-300 border-0 w-1/12 outline-0">Send</button>
+    </div>
+</form>
+  </div>
+</div>
+<script src="main.js"></script>
+
 </body>
-
-
-
 <footer>
     <div class="container2">
         <div class="right-align">
@@ -85,7 +72,6 @@
             <img src="img/pixelf.png" alt="pixel">
         </div>
     </div>
-        
   </footer>
   
   
