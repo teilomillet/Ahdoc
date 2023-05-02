@@ -9,7 +9,7 @@ document.addEventListener('mousemove', function(e) {
 
 	setTimeout(function() {
 		streak.remove();
-	}, 1000);
+	}, 100);
 });
 
 
@@ -123,3 +123,4 @@ document.addEventListener('DOMContentLoaded', (domEvent)=>{
     }
   });
 });
+
