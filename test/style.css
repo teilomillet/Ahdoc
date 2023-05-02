@@ -171,3 +171,152 @@
 
 
   
+   /* Page contactes */
+  .contact-page{
+    font-family: 'Roboto Mono', sans-serif;
+    font-size: 12pt;
+    max-width: 800px;
+    margin-left: 180px;
+    margin-top: 300px;
+    font-weight: 300;
+    line-height: 1.5;
+  }
+
+  h1 {
+
+    font-family: 'Roboto Mono', sans-serif;
+    font-size: 14pt;
+    font-weight: 400;  
+
+  }
+  
+  .contact-page a:hover {
+    text-decoration: underline;
+    color: #e37047;
+  }
+  
+
+
+
+/* Page prix */
+
+  .pricing {
+    display: flex;
+    margin-top: 300px;
+    line-height: 1.5;
+  }
+  
+  .offer {
+    border: 3px solid #333333;
+    border-radius: 12px;
+    padding: 22px;
+    text-align: center;
+    width: 22%;
+    margin-left: 180px;
+  }
+  
+  .offer h2 {
+    font-size: 28px;
+    font-weight: bold;
+    margin-top: 0;
+  }
+  
+  .offer h3 {
+    color: #333333;
+    font-size: 24px;
+    font-size: 14pt;
+    font-weight: 400; 
+  }
+  
+  .offer ul {
+    list-style: none;
+    padding: 0;
+
+  }
+  
+  .offer ul li {
+    margin: 10px 0;
+    font-weight: 300;
+  }
+
+  .offer2 {
+    border: 3px solid #333333;
+    border-radius: 12px;
+    padding: 22px;
+    text-align: center;
+    width: 22%;
+    margin-left: 40px;
+  }
+  
+  .offer2 h2 {
+    font-size: 28px;
+    font-weight: bold;
+    margin-top: 0;
+  }
+  
+  .offer2 h3 {
+    color: #333333;
+    font-size: 24px;
+    font-size: 14pt;
+    font-weight: 400; 
+  }
+  
+  .offer2 ul {
+    list-style: none;
+    padding: 0;
+  }
+  
+  .offer2 ul li {
+    margin: 10px 0;
+    font-weight: 300;
+  }
+  
+  .pricing button {
+    background-color: #afc4e8;
+    border: 3px solid #333333;
+    border-radius: 12px;
+    color: #333333;
+    cursor: pointer;
+    font-size: 16px;
+    margin-top: 20px;
+    padding: 10px 20px;
+    transition: background-color 0.3s ease;
+  }
+  
+  .pricing button:hover {
+    background-color: #e37047;
+    ;
+  }
+
+  
+  
+  #container3 {
+    width: 100%;
+    height: 100vh;
+    background-color: #000;
+  }
+  
+  .streak {
+    position: absolute;
+    background-color: #333333;
+    height: 4px;
+    width: 4px;
+    animation: streak 1s linear infinite;
+  }
+  
+  @keyframes streak {
+    0% {
+      transform: scale(1);
+      opacity: 1;
+    }
+  
+    100% {
+      transform: scale(0);
+      opacity: 0;
+    }
+  }
+  
+  
+
+
+  
