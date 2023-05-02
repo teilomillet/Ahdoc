@@ -24,18 +24,29 @@
       </nav>
     </div>
   </header>
-
-
-
-
 <body> 
-
     <div class="form-container">
-      <form>
+      <form enctype="multipart/form-data">
         <label for="pdfFile">Fichier PDF à résumer :</label><br>
-        <input type="file" id="pdfFile" name="pdfFile" class="input-box"><br>
+        <input type="file" id="file" name="file" class="input-box"><br>
+        <button type="button" onclick="uploadFile()">Upload File</button>
       
+        <script>
+          function uploadFile() {
+            var input = document.getElementById("file");
+            var file = input.files[0];
+            var formData = new FormData();
+            formData.append("file", file);
+            fetch("http://localhost:8000/upload", {
+              mode: 'no-cors',
+              method: "POST",
+              body: formData
+            })
+            .then(data => console.log(data))
+          }
+        </script>
       </form>
+      
     
     </div>
 
@@ -51,12 +62,8 @@
           <button>Envoyer</button>
           
         </div>
-      </div>  
-    
+      </div>   
 </body>
-
-
-
 <footer>
     <div class="container2">
         <div class="right-align">
@@ -68,7 +75,6 @@
             <img src="img/pixelf.png" alt="pixel">
         </div>
     </div>
-        
   </footer>
   
   

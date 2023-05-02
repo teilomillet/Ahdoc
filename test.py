@@ -1,6 +1,5 @@
 from fastapi import FastAPI, File, UploadFile, BackgroundTasks, WebSocket
 from fastapi.responses import HTMLResponse
-from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 
 import uvicorn
