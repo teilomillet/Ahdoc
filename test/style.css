@@ -7,19 +7,13 @@
   
   /* Header */
   header {
-    background-color: #eae4da;
+   
     height: 80px;
     position: fixed;
     top: 0;
     left: 0;
     right: 0;
     z-index: 9999;
-  }
-  
-  /* Utilisation de la police */
-  body {
-    font-family: 'Roboto Mono', sans-serif;
-    background-color: #eae4da;
   }
   
   
@@ -56,9 +50,25 @@
     transition: background-color 0.3s ease;
   }
 
+
+
+
+   /* génrale */
+   body {
+    font-family: 'Roboto Mono', sans-serif;
+    background-color: #eae4da;
+  }
+  
+   /* footer */
+  .footer {
+    max-width: 1900px;
+    position: absolute;
+    bottom: 0;
+    margin-left: 800px;
+  }
+  
   .right-align {
-    
-    color: #666;
+    color: #333333;
     text-align: right;
     padding: 40px;
     position: relative;
@@ -67,119 +77,131 @@
     width: 100%;
     display: inline-block;
     padding-left: 400px;
-  
-
-
-  }
-  
-  .container2 {
-    max-width: 1900px;
-    position: absolute;
-    bottom: 0;
-    margin-left: 800px;
-   
-
-  }
-  
-  a {
-    color: #333333;
-    text-decoration: none;
-  }
-  
-  a:hover {
-    text-decoration: underline;
-  }
-  
-  .input-box {
-    display: inline-block;
-    padding: 20px;
-    font-family: 'Roboto Mono', sans-serif;
-    font-size: 16px;
-    color: #333333;
-  }
-
-  
-  .form-container {
-    margin-left: 200px;
-    margin-bottom: 50px;
-    margin-top: 150px;
-    
   }
 
   .pixel img {
     
     position: absolute;
     height: 700px;
-    bottom: 0;
+    bottom: 0;  
+  }
+
+
+  /* bouton pour envoyer le fichier pdf - index */
+
+.container1 {
+  margin-top: 100px;
+  margin-left: 180px;
+  position: absolute;
+  
+}
+
+
+ .form-container1 button {
+    background-color: #e37047; /* couleur de fond */
+    color: #333333; /* couleur du texte */
+    padding-bottom: 7px; /* taille du padding */
+    padding-top: 4px;
+    padding-left: 12px;
+    padding-right: 12px;
+    border: 3px solid #333333; /* ajout bordure */
+    border-radius: 12px; /* arrondi des coins */
+    cursor: pointer; /* curseur au survol */
+    font-size: 12px; /* taille de la police */
+    width: 150px; /* Modifier la valeur pour ajuster la largeur*/
+    font-family: 'Roboto Mono', sans-serif;/* typo*/
+    font-weight: 400; /* graisse typo*/
+    margin-top: 50px;
     
-   
+    position: absolute;
+  }
+
+  .form-container1 button:hover {
+    background-color: #afc4e8;
+  }
+
+
+  /* chatbox */
+.chat-box {
+  border: 3px solid #333333;
+  border-radius: 12px;
+  width: 600px;
+  padding: 20px;
+  margin-top: 150px;
+  position: absolute;
+  font-family: 'Roboto Mono', sans-serif;
+  display: flex;
+  flex-direction: column;
+}
+
+.chat-header {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 20px;
+}
+
+.chat-title {
+  color: #333;
+  font-size: 24px;
+  margin: 10px;
+}
+
+.chat-form {
+  margin-top: 30px;
+}
+
+.form-input {
+  /* barre de prompt */
+  border: 3px solid #333333;
+  border-radius: 12px;
+  margin-top: 10px;
+  margin-bottom: 10px;
+  padding: 10px;
+  width: 80%;
+  font-family: 'Roboto Mono', sans-serif;
+}
+
+.form-btn {
+  /* bouton pour envoyer */
+  background-color: #afc4e8;
+  border: 3px solid #333333;
+  border-radius: 12px;
+  color: #333333;
+  cursor: pointer;
+  padding: 10px;
+  transition: background-color 0.3s ease;
+  width: 100px;
+  font-family: 'Roboto Mono', sans-serif;
+}
+
+.form-btn:hover {
+  background-color: #555;
+}
+
+.form-btn:active {
+  background-color: #000;
+  color: #fff;
+}
+
+.message-box {
+  border: 3px solid #333333;
+  border-radius: 12px;
+  height: 200px;
+  
+}
     
-  }
-
-  .chat-box {
-    width: 400px;
-    height: 500px;
-    background-color: #f9f9f9;
-    border: 1px solid #ccc;
-    margin: auto;
-    padding: 20px;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-  }
   
-  .chat-history {
-    height: 400px;
-    overflow-y: scroll;
-  }
-  
-  .message {
-    margin-bottom: 10px;
-  }
-  
-  .sender {
-    font-weight: bold;
-    margin-right: 10px;
-  }
-  
-  .chat-input {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-top: 10px;
-  }
-  
-  input[type="text"] {
-    width: 80%;
-    height: 30px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    padding: 5px;
-  }
-  
-  button {
-    width: 18%;
-    height: 30px;
-    background-color: #4CAF50;
-    color: white;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-  }
-  
-
-
 
   
    /* Page contactes */
   .contact-page{
     font-family: 'Roboto Mono', sans-serif;
     font-size: 12pt;
-    max-width: 800px;
     margin-left: 180px;
     margin-top: 300px;
     font-weight: 300;
     line-height: 1.5;
+    color: #333333;
   }
 
   h1 {
@@ -191,10 +213,10 @@
   }
   
   .contact-page a:hover {
-    text-decoration: underline;
+    
     color: #e37047;
   }
-  
+
 
 
 
@@ -256,7 +278,7 @@
   
   .offer2 h3 {
     color: #333333;
-    font-size: 24px;
+    
     font-size: 14pt;
     font-weight: 400; 
   }
@@ -290,6 +312,8 @@
 
   
   
+  /* Pointeur ?  */
+  
   #container3 {
     width: 100%;
     height: 100vh;
@@ -318,5 +342,3 @@
   
   
 
-
-  

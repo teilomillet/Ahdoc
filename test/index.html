@@ -25,53 +25,39 @@
       </nav>
     </div>
   </header>
-<body> 
-    <div class="form-container">
+
+
+
+  <div class="container1">
+    <div class="form-container1" style="margin-top: 20px;">
       <form enctype="multipart/form-data">
         <label for="pdfFile">Fichier PDF à résumer :</label><br>
         <input type="file" id="file" name="file" class="input-box"><br>
-        <button type="button" onclick="uploadFile()">Upload File</button>
+        <button type="button" onclick="uploadFile()">Télécharger</button>
       </form>
     </div>
 
-
     <div class="chat-box">
-
-  <div class="chat-history">
-    <div class="message">
-      <div class="container mx-auto">
-        <h1 class="text-xl text-slate-800 font-bold">Ahdoc!</h1>
-        <div class="message-box w-full flex-col h-96 overflow-y-scroll bg-slate-500" id="question-box">
-            <!-- <div class="w-full flex justify-start">
-                <div class="box-bordered p-1 bg-slate-500 w-8/12 text-slate-100 rounded mb-1">
-                    <p>His message</p>
-                    <p>Email</p>
-                </div>
-            </div> -->
+      <header class="chat-header">
+        <h1 class="chat-title">Ahdoc!</h1>
+      </header>
+      <main class="chat-history">
+        <div class="message-box" id="question-box">
+          <h1 class="chat-title">Ahdoc!</h1>
         </div>
-  <form id="question-form">
-    <div class="input-group mb-2 flex flex-row">
-        <input type="text" id="question"
-            class="border-0 bg-slate-800 text-slate-300 py-2 px-1 w-11/12 outline-0"
-            placeholder="Enter your message">
-        <button type="submit" class="bg-slate-900 text-slate-300 border-0 w-1/12 outline-0">Send</button>
+        <form id="question-form" class="chat-form">
+          <label for="question" class="sr-only">Commencer à dialoguer</label>
+          <div class="input-group mb-2 flex flex-row">
+            <input type="text" id="question"
+              class="form-input"
+              placeholder="Enter your message">
+            <button type="submit" class="form-btn">Envoyer</button>
+          </div>
+        </form>
+      </main>
     </div>
-</form>
-  </div>
-</div>
-<script src="main.js"></script>
+    
+   
+   
 
 </body>
-<footer>
-    <div class="container2">
-        <div class="right-align">
-            <p>Paris</p>
-            <p><a href="#">© Tous droits réservés</a></p>  
-        </div>
-        <div class="pixel">
-            <img src="img/pixelf.png" alt="pixel">
-        </div>
-    </div>
-  </footer>
-  
-  
