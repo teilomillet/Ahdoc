@@ -1,43 +1,51 @@
+// Generate a new user_id every time the user connects
+function generateUserId() {
+  return window.crypto.randomUUID();
+}
+
 // pointer souris
 document.addEventListener('mousemove', function(e) {
-	var streak = document.createElement('div');
-	streak.classList.add('streak');
-	streak.style.top = e.clientY + 'px';
-	streak.style.left = e.clientX + 'px';
-	document.body.appendChild(streak);
+  var streak = document.createElement('div');
+  streak.classList.add('streak');
+  streak.style.top = e.clientY + 'px';
+  streak.style.left = e.clientX + 'px';
+  document.body.appendChild(streak);
 
-
-	setTimeout(function() {
-		streak.remove();
-	}, 1000);
+  setTimeout(function() {
+    streak.remove();
+  }, 100);
 });
-
 
 // uploading file
 function uploadFile() {
   var input = document.getElementById("file");
   var file = input.files[0];
+  if (!file) {
+    console.log('No file selected');
+    return;
+  }
   var formData = new FormData();
-  formData.append("file", file);
-  fetch("http://vps-e30509de.vps.ovh.net:8000/upload", {
+  formData.append("file", file, file.name);
+  fetch("http://0.0.0.0:8000/upload", {
     mode: 'no-cors',
     method: "POST",
     body: formData
   })
   .then(data => console.log(data))
+  .catch(error => console.log(error));
 }
 
 // add event listener
 document.addEventListener('DOMContentLoaded', (domEvent)=>{
-  domEvent.preventDefault();
+  // domEvent.preventDefault();
 
   const questionFormEl = document.getElementById('question-form');
   const questionEl = document.getElementById('question');
   const questionBoxEl = document.getElementById('question-box');
+  
+  const user_id = generateUserId(); // Generate a new user_id every time the user connects
 
-  const userId = window.crypto.randomUUID();
-
-  const socket = new WebSocket(`ws://vps-e30509de.vps.ovh.net:8000/ws/${userId}`);
+  const socket = new WebSocket(`ws://0.0.0.0:8000/ws/${user_id}`);
 
   function handleMessage(data) {
     const message = JSON.parse(data);

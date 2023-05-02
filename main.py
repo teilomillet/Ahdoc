@@ -1,20 +1,17 @@
 from fastapi import FastAPI, File, UploadFile, BackgroundTasks, WebSocket, WebSocketDisconnect
-from fastapi.responses import HTMLResponse
-from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 
+import uuid
+import time
 import uvicorn
 import json
-import logging
 import os
 import tempfile
-import time
-from abc import ABC
-from io import StringIO
-from pathlib import Path
-from typing import Any, List, Optional
-from urllib.parse import urlparse
+import io
+from io import BytesIO
+from typing import Optional
 from copy import copy
+from functools import lru_cache
 
 from langchain.vectorstores import Chroma
 from langchain.embeddings import OpenAIEmbeddings
@@ -22,12 +19,8 @@ from langchain.text_splitter import RecursiveCharacterTextSplitter
 from langchain.llms import OpenAI
 from langchain.chains import VectorDBQA
 from langchain.callbacks import get_openai_callback
-from langchain.document_loaders import TextLoader, UnstructuredPDFLoader, PyPDFLoader
-from langchain.docstore.document import Document
-from langchain.document_loaders.base import BaseLoader
-from langchain.document_loaders.unstructured import UnstructuredFileLoader
-from langchain.utils import get_from_dict_or_env
-from langchain.chains import RetrievalQA
+from langchain.document_loaders import PyPDFLoader
+
 
 os.environ.update({
     'OPENAI_API_KEY': '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'
@@ -39,7 +32,7 @@ app = FastAPI()
 room_list = []
 
 # Temporary file to store the uploaded PDF
-temp_pdf = tempfile.NamedTemporaryFile(delete=False)
+temp_pdf = io.BytesIO()
 
 class FileUpload(BaseModel):
     name: str
@@ -49,9 +42,16 @@ class FileUpload(BaseModel):
 def process_file_upload(upload: FileUpload) -> None:
     print(f"Received file {upload.name} of size {upload.size} bytes")
 
-def load_pdf():
+# Generate a unique filename based on timestamp and random string
+def generate_filename(file_name):
+    timestamp = int(time.time())
+    random_string = uuid.uuid4().hex
+    return f"{file_name}-{timestamp}-{random_string}"
+
+@lru_cache(maxsize=1)
+def load_pdf(file_name):
     # Document loader
-    loader = PyPDFLoader(temp_pdf.name)
+    loader = PyPDFLoader(file_name)
     documents = loader.load()
 
     # Document splitter
@@ -70,19 +70,25 @@ def load_pdf():
 # Endpoint to upload a PDF file
 @app.post("/upload")
 async def upload_file(background_tasks: BackgroundTasks, file: UploadFile = File(...), max_size: Optional[int] = 1000000):
-    contents = await file.read()
-    if len(contents) > max_size:
+    global temp_pdf
+    file_name = generate_filename(file.filename)
+    temp_pdf = io.BytesIO(await file.read())
+    if len(temp_pdf.getvalue()) > max_size:
         return {"error": "File size exceeds the maximum limit."}
-    with open(temp_pdf.name, mode="wb") as f:
-        f.write(contents)
-        background_tasks.add_task(process_file_upload, FileUpload(name=file.filename, size=len(contents)))
+    background_tasks.add_task(process_file_upload, FileUpload(name=file.filename, size=len(temp_pdf.getvalue())))
     return {"filename": file.filename}
+    
 
 # Endpoint to ask a question based on the uploaded PDF
 @app.post("/question")
 def ask_question(question: str):
-    with get_openai_callback() as cb, open(temp_pdf.name, mode="rb") as pdf_file:
-        qa = load_pdf()
+    global temp_pdf
+    with get_openai_callback() as cb, BytesIO(temp_pdf.getvalue()) as pdf_file:
+        # Save the contents of the BytesIO object to a temporary file
+        temp_file = tempfile.NamedTemporaryFile(delete=False)
+        temp_file.write(pdf_file.read())
+        temp_file.close()
+        qa = load_pdf(temp_file.name)
         answer = qa.run(question)
         print(f"Total Tokens: {cb.total_tokens}")
         print(f"Prompt Tokens: {cb.prompt_tokens}")
@@ -131,7 +137,6 @@ async def websocket_endpoint(websocket: WebSocket, client_id: str):
         print(e)
         remove_room(websocket)
     
-
 
 if __name__ == "__main__":
     uvicorn.run(app, host="0.0.0.0", port=8000)
