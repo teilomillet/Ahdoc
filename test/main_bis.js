@@ -13,32 +13,36 @@ function uploadFile() {
 }
 
 // add event listener
-document.addEventListener('DOMContentLoaded', (domEvent)=>{
+// add event listener
+document.addEventListener('DOMContentLoaded', (domEvent) => {
   domEvent.preventDefault();
 
   const questionFormEl = document.getElementById('question-form');
   const questionEl = document.getElementById('question');
   const questionBoxEl = document.getElementById('question-box');
 
+  // Save a Unique UserID
   const userId = window.crypto.randomUUID();
 
   const socket = new WebSocket(`ws://localhost:8000/ws/${userId}`);
 
+  // Define a function to handle incoming messages
   function handleMessage(data) {
     const message = JSON.parse(data);
     questionAppend(false, message);
 
+    // If the message has an "answer" property, it means it's a response to a question, so display the answer in the chat
     if (message.answer) {
-      const answerMessage = { msg: message.answer, userId: null, answer: true };
+      const answerMessage = { msg: message.answer, userId: null };
       questionAppend(false, answerMessage);
     }
   }
 
-  function questionAppend(myQuestion, questionContent){
+  function questionAppend(myQuestion, questionContent) {
     let sideOff = 'justify-start',
-        bgColor = 'bg-slate-700',
-        specificUser = userId;
-    
+      bgColor = 'bg-slate-700',
+      specificUser = userId;
+
     if (myQuestion) {
       sideOff = 'justify-end';
       bgColor = 'bg-slate-500';
@@ -49,7 +53,7 @@ document.addEventListener('DOMContentLoaded', (domEvent)=>{
     const msgType = questionContent.answer ? 'answer' : 'question';
     const bgColorClass = msgType === 'question' ? bgColor : 'bg-green-500';
     const message = msgType === 'question' ? questionContent.msg : questionContent.answer;
-  
+
     const myString = `
       <div class="w-full flex ${sideOff}">
         <div class="box-bordered p-1 ${bgColorClass} w-8/12 text-slate-100 rounded mb-1">
@@ -58,17 +62,11 @@ document.addEventListener('DOMContentLoaded', (domEvent)=>{
         </div>
       </div>
     `;
-  
+
     const domParser = new DOMParser();
     const msgEl = domParser.parseFromString(myString, 'text/html').body.firstElementChild;
     questionBoxEl.append(msgEl);
   }
-
-  // listen to broadcast_to_room
-  document.addEventListener('broadcast_to_room', (event) => {
-    const answerMessage = { msg: event.detail.answer, userId: null, answer: true };
-    questionAppend(false, answerMessage);
-  });
 
   // listen to websocket
   socket.addEventListener('open', (socketEvent) => {
