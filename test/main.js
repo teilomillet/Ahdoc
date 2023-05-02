@@ -19,7 +19,7 @@ function uploadFile() {
   var file = input.files[0];
   var formData = new FormData();
   formData.append("file", file);
-  fetch("http://localhost:8000/upload", {
+  fetch("http://vps-e30509de.vps.ovh.net:8000/upload", {
     mode: 'no-cors',
     method: "POST",
     body: formData
@@ -37,7 +37,7 @@ document.addEventListener('DOMContentLoaded', (domEvent)=>{
 
   const userId = window.crypto.randomUUID();
 
-  const socket = new WebSocket(`ws://localhost:8000/ws/${userId}`);
+  const socket = new WebSocket(`ws://vps-e30509de.vps.ovh.net:8000/ws/${userId}`);
 
   function handleMessage(data) {
     const message = JSON.parse(data);
@@ -51,33 +51,34 @@ document.addEventListener('DOMContentLoaded', (domEvent)=>{
 
   function questionAppend(myQuestion, questionContent){
     let sideOff = 'justify-start',
-        bgColor = 'bg-slate-700',
-        specificUser = userId;
-    
+        bgColorClass = 'bg-slate-700';
+  
     if (myQuestion) {
       sideOff = 'justify-end';
-      bgColor = 'bg-slate-500';
-    } else {
-      specificUser = questionContent.userId;
+      bgColorClass = 'bg-slate-500';
     }
-
-    const msgType = questionContent.answer ? 'answer' : 'question';
-    const bgColorClass = msgType === 'question' ? bgColor : 'bg-green-500';
-    const message = msgType === 'question' ? questionContent.msg : questionContent.answer;
   
     const myString = `
       <div class="w-full flex ${sideOff}">
         <div class="box-bordered p-1 ${bgColorClass} w-8/12 text-slate-100 rounded mb-1">
-          <p>${message}</p>
-          <p>${specificUser}</p>
+          <p>${questionContent.msg}</p>
+          <p>${questionContent.userId}</p>
         </div>
       </div>
     `;
   
     const domParser = new DOMParser();
     const msgEl = domParser.parseFromString(myString, 'text/html').body.firstElementChild;
+  
+    if (myQuestion) {
+      msgEl.classList.add('user-message');
+    } else {
+      msgEl.classList.add('bot-message');
+    }
+  
     questionBoxEl.append(msgEl);
   }
+  
 
   // listen to broadcast_to_room
   document.addEventListener('broadcast_to_room', (event) => {

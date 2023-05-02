@@ -86,7 +86,6 @@
     bottom: 0;  
   }
 
-
   /* bouton pour envoyer le fichier pdf - index */
 
 .container1 {
@@ -189,8 +188,13 @@
   height: 200px;
   
 }
-    
+.user-message {
+    background-color: #FDDFCC;
+  }
   
+  .bot-message {
+    background-color: #C3D3B6;
+  }    
 
   
    /* Page contactes */
