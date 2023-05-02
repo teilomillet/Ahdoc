@@ -50,19 +50,39 @@
     
     </div>
 
+
     <div class="chat-box">
-        <div class="chat-history">
-          <div class="message">
-            <div class="sender">Ahdock</div>
-            <div class="text">Bonjour, comment puis-je vous aider ?</div>
-          </div>
-        </div>
-        <div class="chat-input">
-          <input type="text" placeholder="Votre message...">
-          <button>Envoyer</button>
-          
-        </div>
-      </div>   
+  <div class="chat-history">
+    <div class="message">
+      <div class="sender">Ahdock</div>
+      <div class="text">Bonjour, comment puis-je vous aider ?</div>
+    </div>
+  </div>
+  <div class="chat-input">
+    <input type="question" name="question" placeholder="Votre message..." id="question">
+    <button onclick="askQuestion()">Envoyer</button>
+  </div>
+
+  <script>
+    function askQuestion() {
+  var question = document.getElementById("question");
+  fetch("http://localhost:8000/question", {
+    mode: 'no-cors',
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify({ question: question })
+  })
+  .then(data => {
+    // Do something with the response data
+    console.log(data);
+  })
+  };
+
+
+  </script>
+</div>
 </body>
 <footer>
     <div class="container2">
