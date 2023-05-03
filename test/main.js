@@ -1,75 +1,43 @@
-// Generate a new user_id every time the user connects
-function generateUserId() {
-  return window.crypto.randomUUID();
-}
-
 // pointer souris
 document.addEventListener('mousemove', function(e) {
-  var streak = document.createElement('div');
-  streak.classList.add('streak');
-  streak.style.top = e.clientY + 'px';
-  streak.style.left = e.clientX + 'px';
-  document.body.appendChild(streak);
+	var streak = document.createElement('div');
+	streak.classList.add('streak');
+	streak.style.top = e.clientY + 'px';
+	streak.style.left = e.clientX + 'px';
+	document.body.appendChild(streak);
 
-  setTimeout(function() {
-    streak.remove();
-  }, 100);
+
+	setTimeout(function() {
+		streak.remove();
+	}, 1000);
 });
 
-// signup request
-const signupForm = document.querySelector('#signup-form');
-signupForm.addEventListener('submit', async (e) => {
-  e.preventDefault();
-  
-  const username = document.querySelector('#username').value;
-  const password = document.querySelector('#password').value;
-  const email = document.querySelector('#email').value;
-  
-  const formData = new FormData();
-  formData.append('username', username);
-  formData.append('password', password);
-  formData.append('email', email);
-  
-  const response = await fetch('http://0.0.0.0:8000/users/signup', {
-    mode: 'no-cors',
-    method: 'POST',
-    body: formData
-  });
-  
-  const result = await response.json();
-  alert(result.message);
-});
 
 // uploading file
 function uploadFile() {
   var input = document.getElementById("file");
   var file = input.files[0];
-  if (!file) {
-    console.log('No file selected');
-    return;
-  }
   var formData = new FormData();
-  formData.append("file", file, file.name);
-  fetch("http://0.0.0.0:8000/upload", {
+  formData.append("file", file);
+  fetch("http://vps-e30509de.vps.ovh.net:8000/upload", {
     mode: 'no-cors',
     method: "POST",
     body: formData
   })
   .then(data => console.log(data))
-  .catch(error => console.log(error));
 }
 
 // add event listener
 document.addEventListener('DOMContentLoaded', (domEvent)=>{
-  // domEvent.preventDefault();
+  domEvent.preventDefault();
 
   const questionFormEl = document.getElementById('question-form');
   const questionEl = document.getElementById('question');
   const questionBoxEl = document.getElementById('question-box');
-  
-  const user_id = generateUserId(); // Generate a new user_id every time the user connects
 
-  const socket = new WebSocket(`ws://0.0.0.0:8000/ws/${user_id}`);
+  const userId = window.crypto.randomUUID();
+
+  const socket = new WebSocket(`ws://vps-e30509de.vps.ovh.net:8000/ws/${userId}`);
 
   function handleMessage(data) {
     const message = JSON.parse(data);
@@ -83,34 +51,33 @@ document.addEventListener('DOMContentLoaded', (domEvent)=>{
 
   function questionAppend(myQuestion, questionContent){
     let sideOff = 'justify-start',
-        bgColorClass = 'bg-slate-700';
-  
+        bgColor = 'bg-slate-700',
+        specificUser = userId;
+    
     if (myQuestion) {
       sideOff = 'justify-end';
-      bgColorClass = 'bg-slate-500';
+      bgColor = 'bg-slate-500';
+    } else {
+      specificUser = questionContent.userId;
     }
+
+    const msgType = questionContent.answer ? 'answer' : 'question';
+    const bgColorClass = msgType === 'question' ? bgColor : 'bg-green-500';
+    const message = msgType === 'question' ? questionContent.msg : questionContent.answer;
   
     const myString = `
       <div class="w-full flex ${sideOff}">
         <div class="box-bordered p-1 ${bgColorClass} w-8/12 text-slate-100 rounded mb-1">
-          <p>${questionContent.msg}</p>
-          <p>${questionContent.userId}</p>
+          <p>${message}</p>
+          <p>${specificUser}</p>
         </div>
       </div>
     `;
   
     const domParser = new DOMParser();
     const msgEl = domParser.parseFromString(myString, 'text/html').body.firstElementChild;
-  
-    if (myQuestion) {
-      msgEl.classList.add('user-message');
-    } else {
-      msgEl.classList.add('bot-message');
-    }
-  
     questionBoxEl.append(msgEl);
   }
-  
 
   // listen to broadcast_to_room
   document.addEventListener('broadcast_to_room', (event) => {
@@ -155,25 +122,3 @@ document.addEventListener('DOMContentLoaded', (domEvent)=>{
     }
   });
 });
-
- /* Page profil  */
-const loginForm = document.querySelector('#login-form');
-const usernameInput = document.querySelector('#username-input');
-const passwordInput = document.querySelector('#password-input');
-
-loginForm.addEventListener('submit', (event) => {
-	event.preventDefault();
-
-	const username = usernameInput.value;
-	const password = passwordInput.value;
-
-	// Vérifier si le nom d'utilisateur et le mot de passe sont valides
-	if (username === 'monNomUtilisateur' && password === 'monMotDePasse') {
-		alert('Connecté avec succès!');
-	} else {
-		alert('Nom d\'utilisateur ou mot de passe invalide.');
-	}
-});
-
-
-

@@ -88,8 +88,6 @@ class FileUpload(BaseModel):
     name: str
     size: int
 
-
-
 # FastAPI app
 app = FastAPI()
 
@@ -190,6 +188,15 @@ async def login_for_access_token(data_form: OAuth2PasswordRequestForm = Depends(
     access_token = create_access_token(data={'sub': user.username}, expires_delta=access_token_expires)
     return {'access_token': access_token, "token_type": "bearer"}
 
+
+@app.get("/users/me/", response_model=User)
+async def read_users_me(current_user: User = Depends(get_current_active_user)):
+    return current_user
+    
+@app.get("/users/me/items")
+async def read_own_items(current_user: User = Depends(get_current_active_user)):
+    return [{"item_id": 1, "owner": current_user}]
+
 # Endpoit to sign up a new user
 @app.post("/users/signup", response_model=UserOut)
 async def create_user(user: UserInCreate):
@@ -200,18 +207,11 @@ async def create_user(user: UserInCreate):
     db[user.username] = {"username": user.username, "hashed_password": hashed_password, "disabled": False}
     return UserOut(**db[user.username])
 
-
-@app.get("/users/me/", response_model=User)
-async def read_users_me(current_user: User = Depends(get_current_active_user)):
-    return current_user
-    
-@app.get("/users/me/items")
-async def read_own_items(current_user: User = Depends(get_current_active_user)):
-    return [{"item_id": 1, "owner": current_user}]
-
 # Endpoint to upload a PDF file
 @app.post("/upload")
-async def upload_file(background_tasks: BackgroundTasks, file: UploadFile = File(...), max_size: Optional[int] = 1000000): # , current_user: UserInDB = Depends(get_current_active_user)
+async def upload_file(background_tasks: BackgroundTasks, 
+                      file: UploadFile = File(...), 
+                      max_size: Optional[int] = 1000000): # , current_user: User = Depends(get_current_active_user)
     global temp_pdf
     file_name = generate_filename(file.filename)
     temp_pdf = io.BytesIO(await file.read())
