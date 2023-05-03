@@ -172,7 +172,7 @@ def load_pdf(file_name):
     vectordb = Chroma.from_documents(texts, embeddings)
 
     # Create the chain
-    qa = RetrievalQA.from_chain_type(llm=OpenAI(), chain_type="stuff", retriever=vectordb.as_retriever())
+    qa = RetrievalQA.from_chain_type(llm=OpenAI(), chain_type="stuff", vectorstore=vectordb)
     return qa
 
 
@@ -238,25 +238,48 @@ def ask_question(question: str): #, current_user: UserInDB = Depends(get_current
         print(f"Completion Tokens: {cb.completion_tokens}")
         print(f"Total Cost (USD): ${cb.total_cost}")
         return {"answer": answer}
+    
+async def broadcast_to_room(question: str, except_user):
+    res = list(filter(lambda i: i['socket'] == except_user, room_list))
+    for room in room_list:
+        if except_user != room['socket']:
+            await room['socket'].send_text(json.dumps({'msg': question, 'userId': res[0]['client_id']}))
+        else:
+            # If the message is from the user, call the ask_question endpoint and send the answer back
+            answer = ask_question(question)["answer"]
+            await room['socket'].send_text(json.dumps({'msg': answer, 'userId': res[0]['client_id']}))
+
+def remove_room(except_room):
+    new_room_list = copy(room_list)
+    room_list.clear()
+    for room in new_room_list:
+        if except_room != room['socket']:
+            room_list.append(room)
+    print("room_list append - ", room_list)
+
 
 # Create websocket
-async def send_message(websocket: WebSocket, message: str):
-    await websocket.send_text(json.dumps({'msg': message}))
-
-# Create websocket
-@app.websocket("/chat")
-async def websocket_endpoint(websocket: WebSocket):
+@app.websocket("/ws/{client_id}")
+async def websocket_endpoint(websocket: WebSocket, client_id: str):
     try:
         await websocket.accept()
-        print('Connection established, socket - ', websocket)
+        print('connection is establish, socket - ', websocket)
+        client = {
+                'client_id': client_id,
+                'socket': websocket
+            }
+        room_list.append(client)
         while True:
             data = await websocket.receive_text()
-            answer = ask_question(data)["answer"]
-            await send_message(websocket, answer)
+            # print(data)
+            # await websocket.send_text(data)
+            await broadcast_to_room(data, websocket)
+
     except WebSocketDisconnect as e:
         print('Connection closed.')
         print(e)
-
+        remove_room(websocket)
     
+
 if __name__ == "__main__":
     uvicorn.run(app, host="0.0.0.0", port=8000)

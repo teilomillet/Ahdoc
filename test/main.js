@@ -19,7 +19,8 @@ function uploadFile() {
   var file = input.files[0];
   var formData = new FormData();
   formData.append("file", file);
-  fetch("http://vps-e30509de.vps.ovh.net:8000/upload", {
+  fetch("http://5.196.7.81:8000/upload", {
+    mode: 'no-cors',
     method: "POST",
     body: formData
   })
@@ -36,7 +37,7 @@ document.addEventListener('DOMContentLoaded', (domEvent)=>{
 
   const userId = window.crypto.randomUUID();
 
-  const socket = new WebSocket(`ws://vps-e30509de.vps.ovh.net:8000/ws/${userId}`);
+  const socket = new WebSocket(`ws://5.196.7.81:8000/ws/${userId}`);
 
   function handleMessage(data) {
     const message = JSON.parse(data);
@@ -89,15 +90,16 @@ document.addEventListener('DOMContentLoaded', (domEvent)=>{
     console.log('Connection is open')
   });
 
-  socket.addEventListener('close', (socketEvent) => {
-    console.log('Connection is close')
-  });
-
   // listen for message
   socket.addEventListener('message', (event) => {
     console.log('Getting a message from server ', event.data);
     handleMessage(event.data);
   });
+
+  socket.addEventListener('close', (socketEvent) => {
+    console.log('Connection is close')
+  });
+
 
   // sending some data
   questionFormEl.addEventListener('submit', (event) => {

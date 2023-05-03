@@ -189,7 +189,7 @@
   padding: 10px;
   
 }
-.user-message {
+.message-sent {
   background-color: #a3a3a3;
   border: 3px solid #333333;
   border-radius: 12px;
@@ -200,7 +200,7 @@
   padding: 10px;
   }
   
-  .bot-message {
+  .message-received {
     background-color: #afc4e8;
     border: 3px solid #333333;
     border-radius: 12px;
