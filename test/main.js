@@ -20,7 +20,6 @@ function uploadFile() {
   var formData = new FormData();
   formData.append("file", file);
   fetch("http://vps-e30509de.vps.ovh.net:8000/upload", {
-    mode: 'no-cors',
     method: "POST",
     body: formData
   })
