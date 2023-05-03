@@ -1,74 +1,46 @@
 <!DOCTYPE html>
 <html>
-<script src="main.js"></script>
-<head>
-  <title>Contact</title>
-  <link rel="stylesheet" type="text/css" href="style.css">
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@200;500;600;700&display=swap" rel="stylesheet">
-  <meta charset="UTF-8">
-</head>
-
-<body>
-  <header>
-    <div class="container">
-      <div class="logo">
-        <img> <a href="index.html"><img src="img/logo-10.png" alt="logo"></a>
-      </div>
-      <nav>
-        <ul>
-          <li><a href="offres.html">Offres</a></li>
-          <li><a href="index.html">Recherche</a></li>
-          <li><a href="Profil.html">Profil</a></li>
-          <li><a href="contact.html">Contact</a></li>
-        </ul>
-      </nav>
-    </div>
-  </header>
-
-
-
-  <div class="container1">
-    <div class="form-container1" style="margin-top: 20px;">
-      <form enctype="multipart/form-data">
-        <label for="pdfFile">Fichier PDF à résumer :</label><br>
-        <input type="file" id="file" name="file" class="input-box"><br>
-        <button type="button" onclick="uploadFile()">Télécharger</button>
-      </form>
-    </div>
-
-    <div class="chat-box">
-      <main class="chat-history">
-        <div class="message-box" id="question-box">
-          <h1 class="chat-title">Ahdoc!</h1>
-        </div>
-        <form id="question-form" class="chat-form">
-          <label for="question" class="sr-only">Commencer à dialoguer</label>
-          <div class="input-group mb-2 flex flex-row">
-            <input type="text" id="question"
-              class="form-input"
-              placeholder="Enter your message">
-            <button type="submit" class="form-btn">Envoyer</button>
-
-          </div>
+  <head>
+    <meta charset="UTF-8">
+    <title>Page d'authentification</title>
+    <link rel="stylesheet" href="style.css">
+  </head>
+  <body>
+    <div class="container4">
+      <h1>Entrez un code d'accès ou connectez-vous</h1>
+      <div class="form">
+        <form id="codeForm">
+          <label for="code">Code d'accès :</label>
+          <input type="text" id="code" name="code">
+         
+          <button type="submit" id="login-button2">Valider</button>
         </form>
-      </main>
+        <button id="login-button3">Se connecter</button>
+      </div>
     </div>
+    <script>
+      const codeForm = document.querySelector('#codeForm');
+      const loginButton = document.querySelector('#login-button3');
 
-  
-  
-  <footer>
-    <div class="footer">
-        <div class="right-align">
-            <p> © Tous droits réservés</p>  
-        </div>
-        <div class="pixel">
-            <img src="img/pixelf.png" alt="pixel">
-        </div>
-    </div>
-        
-  </footer>
-  
-<script src="main.js"></script>
+      codeForm.addEventListener('submit', function(e) {
+        e.preventDefault();
 
-</body>
+        const code = document.querySelector('#code').value;
+
+        // Vérifier si le code est correct
+        if (code === '1234') {
+          // Rediriger vers la page d'inscription
+          window.location.href = 'index.html';
+        } else {
+          // Afficher un message d'erreur
+          alert('Code incorrect');
+        }
+      });
+
+      loginButton.addEventListener('click', function() {
+        // Rediriger vers la page de connexion
+        window.location.href = 'conexionbloquee.html';
+      });
+    </script>
+  </body>
+</html>
