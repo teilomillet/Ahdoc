@@ -22,7 +22,7 @@ from langchain.vectorstores import Chroma
 from langchain.embeddings import OpenAIEmbeddings
 from langchain.text_splitter import RecursiveCharacterTextSplitter
 from langchain.llms import OpenAI
-from langchain.chains import VectorDBQA
+from langchain.chains import RetrievalQA
 from langchain.callbacks import get_openai_callback
 from langchain.document_loaders import PyPDFLoader
 
@@ -172,7 +172,7 @@ def load_pdf(file_name):
     vectordb = Chroma.from_documents(texts, embeddings)
 
     # Create the chain
-    qa = VectorDBQA.from_chain_type(llm=OpenAI(), chain_type="stuff", vectorstore=vectordb)
+    qa = RetrievalQA.from_chain_type(llm=OpenAI(), chain_type="stuff", vectorstore=vectordb)
     return qa
 
 
