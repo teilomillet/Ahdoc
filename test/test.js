@@ -16,3 +16,7 @@ document.addEventListener('mousemove', function(e) {
 		streak.remove();
 	}, 1000);
 });
+
+
+
+

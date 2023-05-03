@@ -57,12 +57,13 @@
    body {
     font-family: 'Roboto Mono', sans-serif;
     background-color: #eae4da;
+    min-height: 100vh;
   }
   
    /* footer */
   .footer {
     max-width: 1900px;
-    position: absolute;
+    position: fixed;
     bottom: 0;
     margin-left: 800px;
   }
@@ -71,12 +72,13 @@
     color: #333333;
     text-align: right;
     padding: 40px;
-    position: relative;
+    position: fixed;
     right: 0;
     bottom: 0;
-    width: 100%;
-    display: inline-block;
+    display: inline;
     padding-left: 400px;
+    width: auto;
+    white-space: nowrap
   }
 
   .pixel img {
@@ -86,12 +88,16 @@
     bottom: 0;  
   }
 
+
+  
   /* bouton pour envoyer le fichier pdf - index */
 
+  
 .container1 {
   margin-top: 100px;
-  margin-left: 180px;
+  margin-left: 90px;
   position: absolute;
+  
   
 }
 
@@ -99,10 +105,7 @@
  .form-container1 button {
     background-color: #e37047; /* couleur de fond */
     color: #333333; /* couleur du texte */
-    padding-bottom: 7px; /* taille du padding */
-    padding-top: 4px;
-    padding-left: 12px;
-    padding-right: 12px;
+     padding: 10px 20px;
     border: 3px solid #333333; /* ajout bordure */
     border-radius: 12px; /* arrondi des coins */
     cursor: pointer; /* curseur au survol */
@@ -124,20 +127,18 @@
 .chat-box {
   border: 3px solid #333333;
   border-radius: 12px;
-  width: 600px;
+  width: 700px;
+  height: 500px;
   padding: 20px;
   margin-top: 150px;
   position: absolute;
   font-family: 'Roboto Mono', sans-serif;
   display: flex;
   flex-direction: column;
-}
-
-.chat-header {
-  display: flex;
-  justify-content: center;
-  margin-bottom: 20px;
-}
+  box-shadow: 4px 4px 0 #333333, 5px 5px 0 #333333, 8px 8px 0 #333333, 8px 8px 0 #333333;
+  background-color: #eae4da;
+  }
+  
 
 .chat-title {
   color: #333;
@@ -151,7 +152,7 @@
 
 .form-input {
   /* barre de prompt */
-  border: 3px solid #333333;
+  border: 3px solid #ccc;
   border-radius: 12px;
   margin-top: 10px;
   margin-bottom: 10px;
@@ -168,7 +169,7 @@
   color: #333333;
   cursor: pointer;
   padding: 10px;
-  transition: background-color 0.3s ease;
+  transition: background-color 0.2s ease;
   width: 100px;
   font-family: 'Roboto Mono', sans-serif;
 }
@@ -185,16 +186,35 @@
 .message-box {
   border: 3px solid #333333;
   border-radius: 12px;
-  height: 200px;
+  height: 350px;
+  overflow-y: scroll;
+  padding: 10px;
   
 }
 .user-message {
-    background-color: #FDDFCC;
+  background-color: #a3a3a3;
+  border: 3px solid #333333;
+  border-radius: 12px;
+  align-self: flex-end;
+  margin-top: 12px;
+  margin-bottom: 12px;
+  margin-right: 70px;
+  padding: 10px;
   }
   
   .bot-message {
-    background-color: #C3D3B6;
+    background-color: #afc4e8;
+    border: 3px solid #333333;
+    border-radius: 12px;
+    align-self: flex-start;
+    margin-top: 12px;
+    margin-bottom: 12px;
+    margin-left: 70px;
+    padding: 10px;
   }    
+
+
+
 
   
    /* Page contactes */
@@ -230,6 +250,7 @@
     display: flex;
     margin-top: 300px;
     line-height: 1.5;
+    
   }
   
   .offer {
@@ -239,6 +260,8 @@
     text-align: center;
     width: 22%;
     margin-left: 180px;
+    box-shadow: 4px 4px 0 #333333, 5px 5px 0 #333333, 8px 8px 0 #333333, 8px 8px 0 #333333;
+    background-color: #eae4da;
   }
   
   .offer h2 {
@@ -272,6 +295,8 @@
     text-align: center;
     width: 22%;
     margin-left: 40px;
+    box-shadow: 4px 4px 0 #333333, 5px 5px 0 #333333, 8px 8px 0 #333333, 8px 8px 0 #333333;
+    background-color: #eae4da;
   }
   
   .offer2 h2 {
@@ -345,4 +370,46 @@
   }
   
   
+ /* Page profil  */
 
+  #login-form {
+    width: 400px;
+    margin-top: 150px;
+    margin-left: 180px;
+    padding: 20px;
+    border: 3px solid #333333;
+    border-radius: 12px;
+    box-shadow: 4px 4px 0 #333333, 5px 5px 0 #333333, 8px 8px 0 #333333, 8px 8px 0 #333333;
+    background-color: #eae4da;
+  }
+  
+  #login-form label {
+    display: block;
+    margin-bottom: 10px;
+  }
+  
+  #login-form input[type="text"],
+  #login-form input[type="password"] {
+    width: 100%;
+    padding: 10px;
+    border-radius: 12px;
+    border: 3px solid #ccc;
+    margin-bottom: 20px;
+    box-sizing: border-box;
+  }
+  
+  #login-button {
+    background-color: #afc4e8;
+    color: #333333;
+    padding: 10px 20px;
+    border: 3px solid #333333;
+    border-radius: 12px;
+    cursor: pointer;
+  }
+  
+  #login-button:hover {
+    background-color: #e37047;
+  }
+
+
+  
