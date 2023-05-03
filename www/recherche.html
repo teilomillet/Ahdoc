@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html>
-
 <script src="main.js"></script>
 <head>
   <title>Contact</title>
@@ -20,7 +19,7 @@
       <nav>
         <ul>
           <li><a href="offres.html">Offres</a></li>
-          <li><a href="recherche.html">Recherche</a></li>
+          <li><a href="index.html">Recherche</a></li>
           <li><a href="Profil.html">Profil</a></li>
           <li><a href="contact.html">Contact</a></li>
         </ul>
@@ -29,17 +28,35 @@
   </header>
 
 
-	
-	
+
+  <div class="container1">
+    <div class="form-container1" style="margin-top: 20px;">
+      <form enctype="multipart/form-data">
+        <label for="pdfFile">Fichier PDF à résumer :</label><br>
+        <input type="file" id="file" name="file" class="input-box"><br>
+        <button type="button" onclick="uploadFile()">Télécharger</button>
+      </form>
+    </div>
+
+    <div class="chat-box">
+      <main class="chat-history">
+        <div class="message-box" id="question-box">
+          <h1 class="chat-title">Ahdoc!</h1>
+        </div>
+        <form id="question-form" class="chat-form">
+          <label for="question" class="sr-only">Commencer à dialoguer</label>
+          <div class="input-group mb-2 flex flex-row">
+            <input type="text" id="question"
+              class="form-input"
+              placeholder="Enter your message">
+            <button type="submit" class="form-btn">Envoyer</button>
+
+          </div>
+        </form>
+      </main>
+    </div>
+
   
-  <main class="contact-page">
-    <h1>N'hésitez pas à nous contacter:</h1>
-    <p><a href="mailto:contact@ahdoc.chat">contact@ahdoc.chat</a></p>
-    <p><a href="https://twitter.com/mon_compte_twitter">@mon_compte_twitter</a></p>
-    <p>Paris</p>
-  </main>
-
-
   
   <footer>
     <div class="footer">
@@ -52,6 +69,7 @@
     </div>
         
   </footer>
-</body>
+  
+<script src="main.js"></script>
 
-</html>
+</body>
