@@ -211,7 +211,7 @@ async def read_own_items(current_user: User = Depends(get_current_active_user)):
 
 # Endpoint to upload a PDF file
 @app.post("/upload")
-async def upload_file(background_tasks: BackgroundTasks, file: UploadFile = File(...), max_size: Optional[int] = 1000000, current_user: UserInDB = Depends(get_current_active_user)):
+async def upload_file(background_tasks: BackgroundTasks, file: UploadFile = File(...), max_size: Optional[int] = 1000000): # , current_user: UserInDB = Depends(get_current_active_user)
     global temp_pdf
     file_name = generate_filename(file.filename)
     temp_pdf = io.BytesIO(await file.read())
@@ -223,7 +223,7 @@ async def upload_file(background_tasks: BackgroundTasks, file: UploadFile = File
 
 # Endpoint to ask a question based on the uploaded PDF
 @app.post("/question")
-def ask_question(question: str, current_user: UserInDB = Depends(get_current_active_user)):
+def ask_question(question: str): #, current_user: UserInDB = Depends(get_current_active_user)
     global temp_pdf
     with get_openai_callback() as cb, BytesIO(temp_pdf.getvalue()) as pdf_file:
         # Save the contents of the BytesIO object to a temporary file
