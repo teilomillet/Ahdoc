@@ -12,14 +12,14 @@ document.addEventListener('mousemove', function(e) {
 	}, 1000);
 });
 
-
 // uploading file
 function uploadFile() {
   var input = document.getElementById("file");
   var file = input.files[0];
   var formData = new FormData();
   formData.append("file", file);
-  fetch("http://http://5.196.7.81:8000/upload", {
+  fetch("http://5.196.7.81:8000/upload", {
+    mode: 'no-cors',
     method: "POST",
     body: formData
   })
@@ -27,7 +27,7 @@ function uploadFile() {
 }
 
 document.addEventListener("DOMContentLoaded", () => {
-  const socket = new WebSocket("ws://http://5.196.7.81:8000/chat");
+  const socket = new WebSocket("ws://5.196.7.81:8000/chat");
 
 const questionForm = document.getElementById("question-form");
 const questionInput = document.getElementById("question");

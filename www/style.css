@@ -96,7 +96,7 @@
 .container1 {
   margin-top: 100px;
   margin-left: 90px;
-  position: absolute;
+  position: fixed;
   
 }
 
@@ -190,7 +190,7 @@
   
 }
 .message-sent {
-  background-color: #a3a3a3;
+  background-color: #afc4e8;
   border: 3px solid #333333;
   border-radius: 12px;
   align-self: flex-end;
@@ -201,7 +201,7 @@
   }
   
   .message-received {
-    background-color: #afc4e8;
+    background-color: #a3a3a3;
     border: 3px solid #333333;
     border-radius: 12px;
     align-self: flex-start;
