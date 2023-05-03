@@ -46,54 +46,39 @@ db = {
     }
 }
 
-pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
-oauth_2_scheme = OAuth2PasswordBearer(tokenUrl="token")
-
 room_list = []
 
 # Temporary file to store the uploaded PDF
 temp_pdf = io.BytesIO()
-
-
-# Pydantic models for input and output data
-class User(BaseModel):
-    username: str
-    full_name: Optional[str] = None
-    email: Optional[str] = None
-    disabled: Optional[bool] = None
-
-class UserInDB(User):
-    hashed_password: str
-
-class UserOut(BaseModel):
-    username: str
-    email: str
-
-class UserInCreate(BaseModel):
-    username: str
-    email: str
-    password: str
-    full_name: Optional[str] = None
-    disabled: Optional[bool] = False
 
 class Token(BaseModel):
     access_token: str
     token_type: str
 
 class TokenData(BaseModel):
-    username: Optional[str] = None
+    username: str
+
+class User(BaseModel):
+    username: str
+    email: str or None = None
+    full_name: str or None = None
+    disabled: bool or None = None
+
+class UserInDB(User):
+    hashed_password: str
 
 
 class FileUpload(BaseModel):
     name: str
     size: int
 
-
+pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
+oauth_2_scheme = OAuth2PasswordBearer(tokenUrl="token")
 
 # FastAPI app
 app = FastAPI()
 
-# Functions for password hashing and verification
+
 def verify_password(plain_password, hashed_password):
     return pwd_context.verify(plain_password, hashed_password)
 
@@ -148,7 +133,6 @@ async def get_current_active_user(current_user: UserInDB = Depends(get_current_u
         raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail='Inactive user')
     return current_user
 
-
 # Background task to indicate that the file has been received
 def process_file_upload(upload: FileUpload) -> None:
     print(f"Received file {upload.name} of size {upload.size} bytes")
@@ -190,17 +174,6 @@ async def login_for_access_token(data_form: OAuth2PasswordRequestForm = Depends(
     access_token = create_access_token(data={'sub': user.username}, expires_delta=access_token_expires)
     return {'access_token': access_token, "token_type": "bearer"}
 
-# Endpoit to sign up a new user
-@app.post("/users/signup", response_model=UserOut)
-async def create_user(user: UserInCreate):
-    if user.username in db:
-        raise HTTPException(status_code=400, detail="Username already registered")
-    
-    hashed_password = get_hash_password(user.password)
-    db[user.username] = {"username": user.username, "hashed_password": hashed_password, "disabled": False}
-    return UserOut(**db[user.username])
-
-
 @app.get("/users/me/", response_model=User)
 async def read_users_me(current_user: User = Depends(get_current_active_user)):
     return current_user
@@ -211,7 +184,7 @@ async def read_own_items(current_user: User = Depends(get_current_active_user)):
 
 # Endpoint to upload a PDF file
 @app.post("/upload")
-async def upload_file(background_tasks: BackgroundTasks, file: UploadFile = File(...), max_size: Optional[int] = 1000000, current_user: UserInDB = Depends(get_current_active_user)):
+async def upload_file(background_tasks: BackgroundTasks, file: UploadFile = File(...), max_size: Optional[int] = 1000000):
     global temp_pdf
     file_name = generate_filename(file.filename)
     temp_pdf = io.BytesIO(await file.read())
@@ -223,7 +196,7 @@ async def upload_file(background_tasks: BackgroundTasks, file: UploadFile = File
 
 # Endpoint to ask a question based on the uploaded PDF
 @app.post("/question")
-def ask_question(question: str, current_user: UserInDB = Depends(get_current_active_user)):
+def ask_question(question: str):
     global temp_pdf
     with get_openai_callback() as cb, BytesIO(temp_pdf.getvalue()) as pdf_file:
         # Save the contents of the BytesIO object to a temporary file
