@@ -5,16 +5,39 @@ function generateUserId() {
 
 // pointer souris
 document.addEventListener('mousemove', function(e) {
-	var streak = document.createElement('div');
-	streak.classList.add('streak');
-	streak.style.top = e.clientY + 'px';
-	streak.style.left = e.clientX + 'px';
-	document.body.appendChild(streak);
+  var streak = document.createElement('div');
+  streak.classList.add('streak');
+  streak.style.top = e.clientY + 'px';
+  streak.style.left = e.clientX + 'px';
+  document.body.appendChild(streak);
 
+  setTimeout(function() {
+    streak.remove();
+  }, 100);
+});
 
-	setTimeout(function() {
-		streak.remove();
-	}, 100);
+// signup request
+const signupForm = document.querySelector('#signup-form');
+signupForm.addEventListener('submit', async (e) => {
+  e.preventDefault();
+  
+  const username = document.querySelector('#username').value;
+  const password = document.querySelector('#password').value;
+  const email = document.querySelector('#email').value;
+  
+  const formData = new FormData();
+  formData.append('username', username);
+  formData.append('password', password);
+  formData.append('email', email);
+  
+  const response = await fetch('http://0.0.0.0:8000/users/signup', {
+    mode: 'no-cors',
+    method: 'POST',
+    body: formData
+  });
+  
+  const result = await response.json();
+  alert(result.message);
 });
 
 // uploading file
@@ -132,7 +155,6 @@ document.addEventListener('DOMContentLoaded', (domEvent)=>{
     }
   });
 });
-
 
  /* Page profil  */
 const loginForm = document.querySelector('#login-form');
