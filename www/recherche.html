@@ -3,7 +3,7 @@
 <script src="main.js"></script>
 <head>
   <title>Contact</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1">
+  
   <link rel="stylesheet" type="text/css" href="style.css">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@200;500;600;700&display=swap" rel="stylesheet">
@@ -19,7 +19,7 @@
       <nav>
         <ul>
           <li><a href="offres.html">Offres</a></li>
-          <li><a href="index.html">Recherche</a></li>
+          <li><a href="recherche.html">Recherche</a></li>
           <li><a href="Profil.html">Profil</a></li>
           <li><a href="contact.html">Contact</a></li>
         </ul>
@@ -38,22 +38,27 @@
       </form>
     </div>
 
-    <div class="chat-box">
-      <main class="chat-history">
-        <div class="message-box" id="question-box">
-          <h1 class="chat-title">Ahdoc!</h1>
-        </div>
-        <form id="question-form" class="chat-form">
-          <label for="question" class="sr-only">Commencer à dialoguer</label>
-          <div class="input-group mb-2 flex flex-row">
-            <input type="text" id="question"
-              class="form-input"
-              placeholder="Enter your message">
-            <button type="submit" class="form-btn">Envoyer</button>
-
-          </div>
-        </form>
-      </main>
+    <div class="message-box" id="question-box">
+      <h1 class="chat-title">Ahdoc!</h1>
+    </div>
+    <form id="question-form" class="chat-form">
+      <label for="question" class="sr-only">Commencer à dialoguer</label>
+      <div class="input-group mb-2 flex flex-row">
+        <input type="text" id="question"
+          class="form-input"
+          placeholder="Enter your message">
+        <button type="submit" class="form-btn">Envoyer</button>
+      </div>
+    </form>
+    
+    <!-- Ajout de la classe "user-message" au message de l'utilisateur -->
+    <div class="message-box user-message">
+      <p>Message de l'utilisateur</p>
+    </div>
+    
+    <!-- Ajout de la classe "bot-message" au message du bot -->
+    <div class="message-box bot-message">
+      <p>Message du bot</p>
     </div>
 
   
