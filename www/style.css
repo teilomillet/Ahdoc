@@ -1,3 +1,91 @@
+/* Pour les écrans de taille maximale 1200px */
+@media only screen and (max-width: 1200px) {
+
+  .container {
+    flex-direction: column;
+  }
+
+  nav ul {
+    flex-direction: column;
+    align-items: center;
+    margin-top: 20px;
+  }
+
+  nav li {
+    margin-left: 0;
+    margin-bottom: 10px;
+  }
+
+  .logo img {
+    height: 60px;
+    margin-bottom: 20px;
+  }
+
+  header {
+    height: 120px;
+  }
+
+}
+
+/* Pour les écrans de taille maximale 700px */
+@media only screen and (max-width: 700px) {
+
+  .container1 {
+    margin-top: 50px;
+    margin-left: 30px;
+  }
+
+  .form-container1 button {
+    width: 100%;
+    margin-top: 20px;
+  }
+
+  .chat-box {
+    width: 90%;
+    height: 400px;
+    margin-top: 100px;
+  }
+
+  .message-box {
+    height: 200px;
+  }
+
+  .user-message {
+    margin-right: 10px;
+  }
+
+}
+
+/* Pour les écrans de taille maximale 500px */
+@media only screen and (max-width: 500px) {
+
+  .form-container1 button {
+    font-size: 10px;
+  }
+
+  .chat-box {
+    margin-top: 50px;
+  }
+
+  .message-box {
+    height: 150px;
+  }
+
+  .user-message {
+    margin-right: 0;
+  }
+
+}
+
+
+
+
+
+
+
+
+
+
 /* Reset */
 * {
     margin: 0;
