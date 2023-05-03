@@ -124,3 +124,25 @@ document.addEventListener('DOMContentLoaded', (domEvent)=>{
   });
 });
 
+
+ /* Page profil  */
+const loginForm = document.querySelector('#login-form');
+const usernameInput = document.querySelector('#username-input');
+const passwordInput = document.querySelector('#password-input');
+
+loginForm.addEventListener('submit', (event) => {
+	event.preventDefault();
+
+	const username = usernameInput.value;
+	const password = passwordInput.value;
+
+	// Vérifier si le nom d'utilisateur et le mot de passe sont valides
+	if (username === 'monNomUtilisateur' && password === 'monMotDePasse') {
+		alert('Connecté avec succès!');
+	} else {
+		alert('Nom d\'utilisateur ou mot de passe invalide.');
+	}
+});
+
+
+
