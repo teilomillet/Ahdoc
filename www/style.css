@@ -410,13 +410,35 @@
   }
 
 
-  
+  /* Page n1 entrée dans le site   */
+
+
+
+  .presentation {
+    background-color: #eae4da; /* Couleur de fond */
+    border: 2px solid #333333; /* Bordure */
+    box-shadow: 4px 4px 0 #333333, 5px 5px 0 #333333, 8px 8px 0 #333333, 8px 8px 0 #333333;
+    border-radius: 12px; /* Coins arrondis */
+    padding: 20px; /* Espace intérieur */
+    font-family: 'Roboto Mono', sans-serif; /* Police de caractères */
+    font-size: 18px; /* Taille du texte */
+    line-height: 1.5; /* Interligne */
+    margin-top: 120px;
+    margin-left: 180px;
+    width: 60%;
+
+
+  }
+
+  .presentation p {
+    margin-bottom: 20px; /* Ajoute une marge de 20 pixels en bas de chaque paragraphe */
+  }
 
 
   .container4 {
     margin-top: 100px;
     margin-left: 180px;
-    line-height: 1.5;
+    line-height: 2.5;
 
   }
   
@@ -427,7 +449,6 @@
     justify-content: center;
   }
   
- 
 
   label {
     margin-right: 10px;
@@ -455,6 +476,7 @@
     border: 3px solid #333333;
     border-radius: 12px;
     cursor: pointer;
+    font-family: 'Roboto Mono', sans-serif;
   }
 
   #login-button2 {
@@ -464,4 +486,21 @@
     border: 3px solid #333333;
     border-radius: 12px;
     cursor: pointer;
+    font-family: 'Roboto Mono', sans-serif;
+    
   }
+
+  #login-button3:hover {
+    background-color: #e37047;
+  }
+
+  #login-button2:hover {
+    background-color: #e37047;
+  }
+
+
+
+
+ 
+  
+ 
