@@ -1,6 +1,7 @@
 fastapi==0.95.1
-jose==1.0.0
+python-jose==3.3.0
 langchain==0.0.157
 passlib==1.7.4
 pydantic==1.10.7
 uvicorn==0.22.0
+python-multipart==0.0.6
