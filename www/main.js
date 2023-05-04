@@ -19,7 +19,7 @@ function uploadFile() {
   var formData = new FormData();
   formData.append("file", file);
   fetch("https://ssl.ahdoc.chat/upload", {
-    // mode: 'no-cors',
+    mode: 'no-cors',
     method: "POST",
     body: formData
   })
