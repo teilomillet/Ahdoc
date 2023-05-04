@@ -18,7 +18,7 @@ function uploadFile() {
   var file = input.files[0];
   var formData = new FormData();
   formData.append("file", file);
-  fetch("https://ahdocchat-1-c9192587.deta.app/upload", {
+  fetch("https://ssl.ahdoc.chat/upload", {
     // mode: 'no-cors',
     method: "POST",
     body: formData
@@ -27,7 +27,7 @@ function uploadFile() {
 }
 
 document.addEventListener("DOMContentLoaded", () => {
-  const socket = new WebSocket("ws://ahdocchat-1-c9192587.deta.app/chat");
+  const socket = new WebSocket("wss://ssl.ahdoc.chat/chat");
 
 const questionForm = document.getElementById("question-form");
 const questionInput = document.getElementById("question");

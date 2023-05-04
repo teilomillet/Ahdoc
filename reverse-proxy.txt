@@ -1,0 +1,25 @@
+server {
+    listen 443 ssl;
+    server_name ssl.ahdoc.chat;
+
+    ssl_certificate /etc/letsencrypt/live/ssl.ahdoc.chat/fullchain.pem;
+    ssl_certificate_key /etc/letsencrypt/live/ssl.ahdoc.chat/privkey.pem;
+
+    location / {
+        proxy_pass https://ssl.ahdoc.chat;
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+    }
+}
+
+server {
+    listen 80;
+    server_name ssl.ahdoc.chat;
+
+    location / {
+        proxy_pass http://localhost:8000;
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+    }
+}
