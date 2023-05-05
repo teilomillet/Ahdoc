@@ -9,39 +9,34 @@ document.addEventListener('mousemove', function(e) {
 
 	setTimeout(function() {
 		streak.remove();
-	}, 230);
+	}, 500);
 });
 
 // uploading file
 function uploadFile() {
-  var input = document.getElementById("file");
-  var file = input.files[0];
-  var formData = new FormData();
-  formData.append("file", file);
-  fetch("http://0.0.0.0:8000/upload", {
+  event.preventDefault();
+  console.log("uploadFile() function called");
+  const input = document.getElementById("file");
+  const file = input.files[0];
+  const formData = new FormData();
+  formData.append("file", file, file.name);
+  fetch("https://ssl.ahdoc.chat/upload", {
     mode: 'no-cors',
     method: "POST",
     body: formData
   })
-  .then(response => {
-    if (!response.ok) {
-      throw new Error(`HTTP error! Status: ${response.status}`);
-    }
-    return response.json();
-  })
+  .then(console.log('send.'), console.log('not send.'))
   .then(data => {
     console.log(data);
     // Do something with the response data
   })
-  .catch(error => {
-    console.error('Error:', error);
-    // Handle errors here
-  });
 }
 
 
+
+
 document.addEventListener("DOMContentLoaded", () => {
-  const socket = new WebSocket("ws://0.0.0.0:8000/chat");
+  const socket = new WebSocket("wss://ssl.ahdoc.chat/chat");
 
 const questionForm = document.getElementById("question-form");
 const questionInput = document.getElementById("question");

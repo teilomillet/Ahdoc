@@ -121,7 +121,6 @@ body {
   font-family: 'Roboto Mono', sans-serif;/* typo*/
   font-weight: 400; /* graisse typo*/
   margin-top: 0px;
-  position: relative;
 }
 
 .form-container1 button:hover {
@@ -367,7 +366,7 @@ h1 {
   background-color: #333333;
   height: 4px;
   width: 4px;
-  animation: streak 10s linear infinite;
+  animation: streak 1s linear infinite;
 }
 
 @keyframes streak {
