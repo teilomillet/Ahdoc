@@ -1,5 +1,7 @@
 from fastapi import FastAPI, File, UploadFile, BackgroundTasks, WebSocket, WebSocketDisconnect, Depends, HTTPException, status
 from fastapi.security import OAuth2PasswordBearer, OAuth2PasswordRequestForm
+from fastapi_limiter import FastAPILimiter
+from fastapi_limiter.depends import RateLimiter, WebSocketRateLimiter
 from pydantic import BaseModel
 
 from jose import jwt, JWTError
@@ -172,7 +174,7 @@ def load_pdf(file_name):
     vectordb = Chroma.from_documents(texts, embeddings)
 
     # Create the chain
-    qa = RetrievalQA.from_chain_type(llm=OpenAI(), chain_type="stuff", retriever=vectordb.as_retriever())
+    qa = RetrievalQA.from_chain_type(llm=OpenAI(), chain_type="stuff", retriever=vectordb.as_retriever(search_kwargs={"k": 1}))
     return qa
 
 

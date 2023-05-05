@@ -2,7 +2,7 @@
 <html>
 <script src="main.js"></script>
 <head>
-  <title>Ahdocchat</title>
+  <title>AhDoc</title>
   <link rel="stylesheet" type="text/css" href="style.css">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@200;500;600;700&display=swap" rel="stylesheet">
@@ -27,36 +27,37 @@
   </header>
 
 
-
-  <div class="container1">
-    <div class="form-container1" style="margin-top: 20px;">
+  
+  <div class="file-container">
+    <div class="file-uploader">
       <form enctype="multipart/form-data">
         <label for="pdfFile">Fichier PDF à résumer :</label><br>
-        <input type="file" id="file" name="file" class="input-box"><br>
-        <button type="button" onclick="uploadFile()">Télécharger</button>
+        <input type="file" accept="application/pdf" id="file" name="file" class="input-box">
+        <button type="button-telecharger" onclick="uploadFile()">Télécharger</button>
       </form>
     </div>
 
+  <div class="chat-container">
     <div class="chat-box">
       <main class="chat-history">
         <div class="message-box" id="question-box">
-          <h1 class="chat-title">Ahdoc!</h1>
         </div>
         <form id="question-form" class="chat-form">
           <label for="question" class="sr-only">Commencer à dialoguer</label>
-          <div class="input-group mb-2 flex flex-row">
+          <div class="input">
             <input type="text" id="question"
               class="form-input"
-              placeholder="Enter your message">
+              placeholder="Entrer votre message...">
             <button type="submit" class="form-btn">Envoyer</button>
 
           </div>
         </form>
       </main>
     </div>
-
-  
-  
+  </div>
+    
+ 
+    </div>
   <footer>
     <div class="footer">
         <div class="right-align">
@@ -68,7 +69,7 @@
     </div>
         
   </footer>
-  
-<script src="main.js"></script>
-
+  <script src="main.js"></script>
 </body>
+</html>
+

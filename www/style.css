@@ -1,506 +1,514 @@
 /* Reset */
+/*
 * {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-  }
-  
-  /* Header */
-  header {
-   
-    height: 80px;
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    z-index: 9999;
-  }
-  
-  
-  .container {
-    max-width: 1200px;
-    margin: 0 auto;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-  }
-  
-  .logo img {
-    height: 90px;
-  }
-  
-  nav ul {
-    list-style: none;
-    margin: 0;
-    padding: 0;
-    display: flex;
-  }
-  
-  nav li {
-    margin-left: 25px;
-  }
-  
-  nav a {
-    display: block;
-    text-decoration: none;
-    color: #333333;
-    font-weight: bold;
-    padding: 10px 15px;
-    border-radius: 3px;
-    transition: background-color 0.3s ease;
-  }
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+*/
 
-
-
-
-   /* génrale */
-   body {
-    font-family: 'Roboto Mono', sans-serif;
-    background-color: #eae4da;
-    min-height: 100vh;
-  }
-  
-   /* footer */
-  .footer {
-    max-width: 1900px;
-    position: fixed;
-    bottom: 0;
-    margin-left: 800px;
-  }
-  
-  .right-align {
-    color: #333333;
-    text-align: right;
-    padding: 40px;
-    position: fixed;
-    right: 0;
-    bottom: 0;
-    display: inline;
-    padding-left: 400px;
-    width: auto;
-    white-space: nowrap
-  }
-
-  .pixel img {
-    
-    position: absolute;
-    height: 700px;
-    bottom: 0;  
-  }
-
-
-  
-  /* bouton pour envoyer le fichier pdf - index */
-
-  
-.container1 {
-  margin-top: 100px;
-  margin-left: 90px;
+/* Header */
+header {
+  height: 8vh;
   position: fixed;
-  
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 9999;
 }
 
- .form-container1 button {
-    background-color: #e37047; /* couleur de fond */
-    color: #333333; /* couleur du texte */
-     padding: 10px 20px;
-    border: 3px solid #333333; /* ajout bordure */
-    border-radius: 12px; /* arrondi des coins */
-    cursor: pointer; /* curseur au survol */
-    font-size: 12px; /* taille de la police */
-    width: 150px; /* Modifier la valeur pour ajuster la largeur*/
-    font-family: 'Roboto Mono', sans-serif;/* typo*/
-    font-weight: 400; /* graisse typo*/
-    margin-top: 50px;
-    
-    position: absolute;
-  }
 
-  .form-container1 button:hover {
-    background-color: #afc4e8;
-  }
+.container {
+  max-width: 80%;
+  margin: 0;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.logo img {
+  min-height: 1vh;
+  max-height: 70px;
+}
+
+nav ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+}
+
+nav li {
+  margin-left: 2vh;
+  min-height: 1vh;
+}
+
+nav a {
+  display: flex;
+  text-decoration: none;
+  color: #333333;
+  font-weight: bold;
+  padding: 1vh 1.5vh;
+  border-radius: 3px;
+  transition: background-color 0.3s ease;
+}
 
 
-  /* chatbox */
+
+ /* footer */
+footer {
+  height: 8vh;
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 9999;
+}
+
+.right-align {
+  color: #333333;
+  text-align: right;
+  padding: 1vh;
+  position: fixed;
+  right: 0;
+  bottom: 0;
+  padding-left: 400px;
+  width: auto;
+  white-space: nowrap;
+}
+
+.pixel img {
+  position: absolute;
+  height: 100%;
+}
+
+/* générale*/
+body {
+  font-family: 'Roboto Mono', sans-serif;
+  background-color: #eae4da;
+  overflow: hidden;
+  min-height: auto;
+ }
+
+/* bouton pour envoyer le fichier pdf - index */
+/* Conteneur du uploader + chatbox */
+.file-container {
+  display: block;
+  height: auto;
+  width: auto;
+  padding-top: 10vh;
+  margin-left: auto;
+  margin-right: auto;
+  padding-bottom: 9vh;
+  padding-left: 3vh;
+  padding-right: 3vh;
+
+}
+.file-uploader {
+  padding-left: 3vh;
+  padding-right: 3vh;
+}
+
+.file-uploader button {
+  background-color: #e37047; /* couleur de fond */
+  color: #333333; /* couleur du texte */
+   padding: 10px 20px;
+  border: 3px solid #333333; /* ajout bordure */
+  border-radius: 12px; /* arrondi des coins */
+  cursor: pointer; /* curseur au survol */
+  font-size: 12px; /* taille de la police */
+  width: 150px; /* Modifier la valeur pour ajuster la largeur*/
+  font-family: 'Roboto Mono', sans-serif;/* typo*/
+  font-weight: 400; /* graisse typo*/
+  margin-top: 0px;
+  position: relative;
+}
+
+.form-container1 button:hover {
+  background-color: #afc4e8;
+}
+
+
+.chat-container {
+  max-width: auto;
+  max-height: auto;
+  height: auto;
+  margin: 0 auto;
+  display: flex;
+}
+
+/* chatbox */
 .chat-box {
   border: 3px solid #333333;
   border-radius: 12px;
-  width: 700px;
-  height: 500px;
+  width: 100%;
   padding: 20px;
-  margin-top: 150px;
-  position: absolute;
+  margin-top: 15px;
+  position: flex;
+  height: auto;
   font-family: 'Roboto Mono', sans-serif;
-  display: flex;
-  flex-direction: column;
   box-shadow: 4px 4px 0 #333333, 5px 5px 0 #333333, 8px 8px 0 #333333, 8px 8px 0 #333333;
   background-color: #eae4da;
-  }
-  
+}
+
 
 .chat-title {
-  color: #333;
-  font-size: 24px;
-  margin: 10px;
+color: #333;
+font-size: 24px;
+margin: 10px;
 }
 
 .chat-form {
-  margin-top: 30px;
+margin-top: 30px;
+position: inherit;
 }
 
+
 .form-input {
-  /* barre de prompt */
-  border: 3px solid #ccc;
-  border-radius: 12px;
-  margin-top: 10px;
-  margin-bottom: 10px;
-  padding: 10px;
-  width: 80%;
-  font-family: 'Roboto Mono', sans-serif;
+/* barre de prompt : Entrer votre message */
+border: 3px solid #ccc;
+border-radius: 12px;
+margin-top: 10px;
+margin-bottom: 10px;
+padding: 10px;
+width: 75%;
+font-family: 'Roboto Mono', sans-serif;
 }
 
 .form-btn {
-  /* bouton pour envoyer */
-  background-color: #afc4e8;
-  border: 3px solid #333333;
-  border-radius: 12px;
-  color: #333333;
-  cursor: pointer;
-  padding: 10px;
-  transition: background-color 0.2s ease;
-  width: 100px;
-  font-family: 'Roboto Mono', sans-serif;
+/* bouton pour envoyer */
+background-color: #afc4e8;
+border: 3px solid #333333;
+border-radius: 12px;
+color: #333333;
+cursor: pointer;
+padding: 10px;
+transition: background-color 0.2s ease;
+width: 20%;
+font-family: 'Roboto Mono', sans-serif;
+position: relative;
 }
 
 .form-btn:hover {
-  background-color: #555;
+background-color: #555;
 }
 
 .form-btn:active {
-  background-color: #000;
-  color: #fff;
+background-color: #000;
+color: #fff;
 }
 
 .message-box {
-  border: 3px solid #333333;
-  border-radius: 12px;
-  height: 350px;
-  overflow-y: scroll;
-  padding: 10px;
-  
+border: 3px solid #333333;
+border-radius: 12px;
+background-color: #f0fbfe7a;
+height: 48vh;
+min-height: 20vh;
+max-height: 60vh;
+overflow-y: scroll;
 }
 .message-sent {
-  background-color: #afc4e8;
+background-color: #afc4e8;
+border: 3px solid #333333;
+border-radius: 12px;
+align-self: flex-end;
+margin-top: 12px;
+margin-bottom: 12px;
+margin-left: 20vh;
+padding: 10px;
+}
+
+.message-received {
+  background-color: #a3a3a3;
   border: 3px solid #333333;
   border-radius: 12px;
-  align-self: flex-end;
+  align-self: flex-start;
   margin-top: 12px;
   margin-bottom: 12px;
-  margin-right: 70px;
+  margin-right: 20vh;
   padding: 10px;
-  }
+}    
+
+
+ /* Page contactes */
+.contact-page{
+  font-family: 'Roboto Mono', sans-serif;
+  font-size: 12pt;
+  margin-left: 180px;
+  margin-top: 300px;
+  font-weight: 300;
+  line-height: 1.5;
+  color: #333333;
+}
+
+h1 {
+
+  font-family: 'Roboto Mono', sans-serif;
+  font-size: 14pt;
+  font-weight: 400;  
+
+}
+
+.contact-page a:hover {
   
-  .message-received {
-    background-color: #a3a3a3;
-    border: 3px solid #333333;
-    border-radius: 12px;
-    align-self: flex-start;
-    margin-top: 12px;
-    margin-bottom: 12px;
-    margin-left: 70px;
-    padding: 10px;
-  }    
-
-
-
-
-  
-   /* Page contactes */
-  .contact-page{
-    font-family: 'Roboto Mono', sans-serif;
-    font-size: 12pt;
-    margin-left: 180px;
-    margin-top: 300px;
-    font-weight: 300;
-    line-height: 1.5;
-    color: #333333;
-  }
-
-  h1 {
-
-    font-family: 'Roboto Mono', sans-serif;
-    font-size: 14pt;
-    font-weight: 400;  
-
-  }
-  
-  .contact-page a:hover {
-    
-    color: #e37047;
-  }
+  color: #e37047;
+}
 
 
 
 
 /* Page offres */
 
-  .pricing {
-    display: flex;
-    margin-top: 300px;
-    line-height: 1.5;
-    
-  }
+.pricing {
+  display: flex;
+  margin-top: 300px;
+  line-height: 1.5;
   
-  .offer {
-    border: 3px solid #333333;
-    border-radius: 12px;
-    padding: 22px;
-    text-align: center;
-    width: 22%;
-    margin-left: 180px;
-    box-shadow: 4px 4px 0 #333333, 5px 5px 0 #333333, 8px 8px 0 #333333, 8px 8px 0 #333333;
-    background-color: #eae4da;
-  }
+}
+
+.offer {
+  border: 3px solid #333333;
+  border-radius: 12px;
+  padding: 22px;
+  text-align: center;
+  width: 22%;
+  margin-left: 180px;
+  box-shadow: 4px 4px 0 #333333, 5px 5px 0 #333333, 8px 8px 0 #333333, 8px 8px 0 #333333;
+  background-color: #eae4da;
+}
+
+.offer h2 {
+  font-size: 28px;
+  font-weight: bold;
+  margin-top: 0;
+}
+
+.offer h3 {
+  color: #333333;
+  font-size: 24px;
+  font-size: 14pt;
+  font-weight: 400; 
+}
+
+.offer ul {
+  list-style: none;
+  padding: 0;
+
+}
+
+.offer ul li {
+  margin: 10px 0;
+  font-weight: 300;
+}
+
+.offer2 {
+  border: 3px solid #333333;
+  border-radius: 12px;
+  padding: 22px;
+  text-align: center;
+  width: 22%;
+  margin-left: 40px;
+  box-shadow: 4px 4px 0 #333333, 5px 5px 0 #333333, 8px 8px 0 #333333, 8px 8px 0 #333333;
+  background-color: #eae4da;
+}
+
+.offer2 h2 {
+  font-size: 28px;
+  font-weight: bold;
+  margin-top: 0;
+}
+
+.offer2 h3 {
+  color: #333333;
   
-  .offer h2 {
-    font-size: 28px;
-    font-weight: bold;
-    margin-top: 0;
+  font-size: 14pt;
+  font-weight: 400; 
+}
+
+.offer2 ul {
+  list-style: none;
+  padding: 0;
+}
+
+.offer2 ul li {
+  margin: 10px 0;
+  font-weight: 300;
+}
+
+.pricing button {
+  background-color: #afc4e8;
+  border: 3px solid #333333;
+  border-radius: 12px;
+  color: #333333;
+  cursor: pointer;
+  font-size: 16px;
+  margin-top: 20px;
+  padding: 10px 20px;
+  transition: background-color 0.3s ease;
+}
+
+.pricing button:hover {
+  background-color: #e37047;
+  ;
+}
+
+
+
+/* Pointeur ?  */
+
+#container3 {
+  width: 100%;
+  height: 100vh;
+  background-color: #000;
+}
+
+.streak {
+  position: absolute;
+  background-color: #333333;
+  height: 4px;
+  width: 4px;
+  animation: streak 10s linear infinite;
+}
+
+@keyframes streak {
+  0% {
+    transform: scale(1);
+    opacity: 1;
   }
+
+  100% {
+    transform: scale(0);
+    opacity: 0;
+  }
+}
+
+
+/* Page profil  */
+
+#login-form {
+  width: 400px;
+  margin-top: 150px;
+  margin-left: 180px;
+  padding: 20px;
+  border: 3px solid #333333;
+  border-radius: 12px;
+  box-shadow: 4px 4px 0 #333333, 5px 5px 0 #333333, 8px 8px 0 #333333, 8px 8px 0 #333333;
+  background-color: #eae4da;
+}
+
+#login-form label {
+  display: block;
+  margin-bottom: 10px;
+}
+
+#login-form input[type="text"],
+#login-form input[type="password"] {
+  width: 100%;
+  padding: 10px;
+  border-radius: 12px;
+  border: 3px solid #ccc;
+  margin-bottom: 20px;
+  box-sizing: border-box;
+}
+
+#login-button {
+  background-color: #afc4e8;
+  color: #333333;
+  padding: 10px 20px;
+  border: 3px solid #333333;
+  border-radius: 12px;
+  cursor: pointer;
+}
+
+#login-button:hover {
+  background-color: #e37047;
+}
+
+
+/* Page n1 entrée dans le site   */
+
+
+
+.presentation {
+  background-color: #eae4da; /* Couleur de fond */
+  border: 2px solid #333333; /* Bordure */
+  box-shadow: 4px 4px 0 #333333, 5px 5px 0 #333333, 8px 8px 0 #333333, 8px 8px 0 #333333;
+  border-radius: 12px; /* Coins arrondis */
+  padding: 20px; /* Espace intérieur */
+  font-family: 'Roboto Mono', sans-serif; /* Police de caractères */
+  font-size: 18px; /* Taille du texte */
+  line-height: 1.5; /* Interligne */
+  margin-top: 120px;
+  margin-left: 180px;
+  width: 60%;
+
+
+}
+
+.presentation p {
+  margin-bottom: 20px; /* Ajoute une marge de 20 pixels en bas de chaque paragraphe */
+}
+
+
+.container4 {
+  margin-top: 100px;
+  margin-left: 180px;
+  line-height: 2.5;
+
+}
+
+.form {
+  display: inline;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+
+label {
+  margin-right: 10px;
+}
+
+input {
+  margin-right: 10px;
+}
+
+
+
+#codeForm input[type="text"] {
+  width: 20%;
+  padding: 10px;
+  border-radius: 12px;
+  border: 3px solid #ccc;
+  margin-bottom: 20px;
   
-  .offer h3 {
-    color: #333333;
-    font-size: 24px;
-    font-size: 14pt;
-    font-weight: 400; 
-  }
+}
+
+#login-button3 {
+  background-color: #afc4e8;
+  color: #333333;
+  padding: 10px 20px;
+  border: 3px solid #333333;
+  border-radius: 12px;
+  cursor: pointer;
+  font-family: 'Roboto Mono', sans-serif;
+}
+
+#login-button2 {
+  background-color: #afc4e8;
+  color: #333333;
+  padding: 10px 20px;
+  border: 3px solid #333333;
+  border-radius: 12px;
+  cursor: pointer;
+  font-family: 'Roboto Mono', sans-serif;
   
-  .offer ul {
-    list-style: none;
-    padding: 0;
+}
 
-  }
-  
-  .offer ul li {
-    margin: 10px 0;
-    font-weight: 300;
-  }
+#login-button3:hover {
+  background-color: #e37047;
+}
 
-  .offer2 {
-    border: 3px solid #333333;
-    border-radius: 12px;
-    padding: 22px;
-    text-align: center;
-    width: 22%;
-    margin-left: 40px;
-    box-shadow: 4px 4px 0 #333333, 5px 5px 0 #333333, 8px 8px 0 #333333, 8px 8px 0 #333333;
-    background-color: #eae4da;
-  }
-  
-  .offer2 h2 {
-    font-size: 28px;
-    font-weight: bold;
-    margin-top: 0;
-  }
-  
-  .offer2 h3 {
-    color: #333333;
-    
-    font-size: 14pt;
-    font-weight: 400; 
-  }
-  
-  .offer2 ul {
-    list-style: none;
-    padding: 0;
-  }
-  
-  .offer2 ul li {
-    margin: 10px 0;
-    font-weight: 300;
-  }
-  
-  .pricing button {
-    background-color: #afc4e8;
-    border: 3px solid #333333;
-    border-radius: 12px;
-    color: #333333;
-    cursor: pointer;
-    font-size: 16px;
-    margin-top: 20px;
-    padding: 10px 20px;
-    transition: background-color 0.3s ease;
-  }
-  
-  .pricing button:hover {
-    background-color: #e37047;
-    ;
-  }
-
-  
-  
-  /* Pointeur ?  */
-  
-  #container3 {
-    width: 100%;
-    height: 100vh;
-    background-color: #000;
-  }
-  
-  .streak {
-    position: absolute;
-    background-color: #333333;
-    height: 4px;
-    width: 4px;
-    animation: streak 1s linear infinite;
-  }
-  
-  @keyframes streak {
-    0% {
-      transform: scale(1);
-      opacity: 1;
-    }
-  
-    100% {
-      transform: scale(0);
-      opacity: 0;
-    }
-  }
-  
-  
- /* Page profil  */
-
-  #login-form {
-    width: 400px;
-    margin-top: 150px;
-    margin-left: 180px;
-    padding: 20px;
-    border: 3px solid #333333;
-    border-radius: 12px;
-    box-shadow: 4px 4px 0 #333333, 5px 5px 0 #333333, 8px 8px 0 #333333, 8px 8px 0 #333333;
-    background-color: #eae4da;
-  }
-  
-  #login-form label {
-    display: block;
-    margin-bottom: 10px;
-  }
-  
-  #login-form input[type="text"],
-  #login-form input[type="password"] {
-    width: 100%;
-    padding: 10px;
-    border-radius: 12px;
-    border: 3px solid #ccc;
-    margin-bottom: 20px;
-    box-sizing: border-box;
-  }
-  
-  #login-button {
-    background-color: #afc4e8;
-    color: #333333;
-    padding: 10px 20px;
-    border: 3px solid #333333;
-    border-radius: 12px;
-    cursor: pointer;
-  }
-  
-  #login-button:hover {
-    background-color: #e37047;
-  }
-
-
-  /* Page n1 entrée dans le site   */
-
-
-
-  .presentation {
-    background-color: #eae4da; /* Couleur de fond */
-    border: 2px solid #333333; /* Bordure */
-    box-shadow: 4px 4px 0 #333333, 5px 5px 0 #333333, 8px 8px 0 #333333, 8px 8px 0 #333333;
-    border-radius: 12px; /* Coins arrondis */
-    padding: 20px; /* Espace intérieur */
-    font-family: 'Roboto Mono', sans-serif; /* Police de caractères */
-    font-size: 18px; /* Taille du texte */
-    line-height: 1.5; /* Interligne */
-    margin-top: 120px;
-    margin-left: 180px;
-    width: 60%;
-
-
-  }
-
-  .presentation p {
-    margin-bottom: 20px; /* Ajoute une marge de 20 pixels en bas de chaque paragraphe */
-  }
-
-
-  .container4 {
-    margin-top: 100px;
-    margin-left: 180px;
-    line-height: 2.5;
-
-  }
-  
-  .form {
-    display: inline;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-  }
-  
-
-  label {
-    margin-right: 10px;
-  }
-
-  input {
-    margin-right: 10px;
-  }
-
-
-
-  #codeForm input[type="text"] {
-    width: 20%;
-    padding: 10px;
-    border-radius: 12px;
-    border: 3px solid #ccc;
-    margin-bottom: 20px;
-    
-  }
-
-  #login-button3 {
-    background-color: #afc4e8;
-    color: #333333;
-    padding: 10px 20px;
-    border: 3px solid #333333;
-    border-radius: 12px;
-    cursor: pointer;
-    font-family: 'Roboto Mono', sans-serif;
-  }
-
-  #login-button2 {
-    background-color: #afc4e8;
-    color: #333333;
-    padding: 10px 20px;
-    border: 3px solid #333333;
-    border-radius: 12px;
-    cursor: pointer;
-    font-family: 'Roboto Mono', sans-serif;
-    
-  }
-
-  #login-button3:hover {
-    background-color: #e37047;
-  }
-
-  #login-button2:hover {
-    background-color: #e37047;
-  }
-
-
-
-
- 
-  
- 
+#login-button2:hover {
+  background-color: #e37047;
+}

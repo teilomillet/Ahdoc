@@ -9,7 +9,7 @@ document.addEventListener('mousemove', function(e) {
 
 	setTimeout(function() {
 		streak.remove();
-	}, 1000);
+	}, 230);
 });
 
 // uploading file
@@ -18,16 +18,30 @@ function uploadFile() {
   var file = input.files[0];
   var formData = new FormData();
   formData.append("file", file);
-  fetch("https://ssl.ahdoc.chat/upload", {
+  fetch("http://0.0.0.0:8000/upload", {
     mode: 'no-cors',
     method: "POST",
     body: formData
   })
-  .then(data => console.log(data))
+  .then(response => {
+    if (!response.ok) {
+      throw new Error(`HTTP error! Status: ${response.status}`);
+    }
+    return response.json();
+  })
+  .then(data => {
+    console.log(data);
+    // Do something with the response data
+  })
+  .catch(error => {
+    console.error('Error:', error);
+    // Handle errors here
+  });
 }
 
+
 document.addEventListener("DOMContentLoaded", () => {
-  const socket = new WebSocket("wss://ssl.ahdoc.chat/chat");
+  const socket = new WebSocket("ws://0.0.0.0:8000/chat");
 
 const questionForm = document.getElementById("question-form");
 const questionInput = document.getElementById("question");
