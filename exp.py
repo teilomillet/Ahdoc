@@ -1,4 +1,4 @@
-from fastapi import FastAPI, File, Form, UploadFile, BackgroundTasks, WebSocket, WebSocketDisconnect, Depends, HTTPException, status
+from fastapi import FastAPI, File, UploadFile, BackgroundTasks, WebSocket, WebSocketDisconnect, Depends, HTTPException, status, Form
 from fastapi.security import OAuth2PasswordBearer, OAuth2PasswordRequestForm
 from fastapi_limiter import FastAPILimiter
 from fastapi_limiter.depends import RateLimiter, WebSocketRateLimiter
@@ -7,12 +7,6 @@ from pydantic import BaseModel
 from jose import jwt, JWTError
 from passlib.context import CryptContext
 
-from fastapi_cache import FastAPICache
-from fastapi_cache.backends.redis import RedisBackend
-from fastapi_cache.decorator import cache
-
-from redis import asyncio as aioredis
-import redis
 
 import uuid
 import time
@@ -21,6 +15,9 @@ import json
 import os
 import tempfile
 import io
+import threading
+import asyncio
+
 from io import BytesIO
 from typing import Optional
 from copy import copy
@@ -33,7 +30,7 @@ from langchain.text_splitter import RecursiveCharacterTextSplitter
 from langchain.llms import OpenAI
 from langchain.chains import RetrievalQA
 from langchain.callbacks import get_openai_callback
-from langchain.document_loaders import PyMuPDFLoader
+from langchain.document_loaders import PyPDFLoader, UnstructuredPDFLoader, PyMuPDFLoader
 
 
 os.environ.update({
@@ -44,6 +41,7 @@ SECRET_KEY = "4f37c493e65289aed7abe7b0df5b807dbd8c4e6b5998e749e0a31cf9d355d255"
 ALGORITHM = "HS256"
 ACCESS_TOKEN_EXPIRE_MINUTES = 30
 
+UPLOAD_DIR = "data"
 
 db = {
     "test": {
@@ -55,32 +53,14 @@ db = {
     }
 }
 
-redis_db = {
-    "user_1": {
-        "filename": "filename1",
-        "vector_store": {
-            '1': 'vector1',
-            '2': 'vector2',
-            '3': 'vector3'
-        }
-    },
-    "user_2": {
-        "filename": "filename2",
-        "vector_store": {
-            '1': 'vector1',
-            '2': 'vector2',
-            '3': 'vector3'
-        }
-    }
-}
-
 pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 oauth_2_scheme = OAuth2PasswordBearer(tokenUrl="token")
 
 room_list = []
 
-#Redis
-redis_db = redis.Redis(host='localhost', port=6379)
+# Temporary file to store the uploaded PDF
+temp_pdf = io.BytesIO()
+
 
 # Pydantic models for input and output data
 class User(BaseModel):
@@ -215,9 +195,12 @@ def generate_filename(file_name):
     return f"{file_name}-{timestamp}-{random_string}"
 
 @lru_cache(maxsize=1)
-def load_pdf(file_name):
-    # Document loader
-    loader = PyMuPDFLoader(file_name)
+def load_pdf(user_id):
+    # Construct the path to the PDF file
+    file_path = os.path.join(UPLOAD_DIR, f"{user_id}.pdf")
+
+    # Load the document
+    loader = PyMuPDFLoader(file_path)
     documents = loader.load()
 
     # Document splitter
@@ -229,40 +212,46 @@ def load_pdf(file_name):
     vectordb = Chroma.from_documents(texts, embeddings)
 
     # Create the chain
-    qa = RetrievalQA.from_chain_type(llm=OpenAI(), chain_type="stuff", retriever=vectordb.as_retriever(search_kwargs={"k": 1}))
+    llm = OpenAI()
+    retriever = vectordb.as_retriever()
+    qa = RetrievalQA.from_chain_type(llm=llm, chain_type="stuff", retriever=retriever)
+
     return qa
 
 # Endpoint to upload a PDF file
 @app.post("/upload")
-async def upload_file(background_tasks: BackgroundTasks, 
-                      file: UploadFile = File(...), 
+async def upload_file(background_tasks: BackgroundTasks,
+                      file: UploadFile = File(...),
                       max_size: Optional[int] = 100000000,
                       user_id: str = Form(...)):
-    file_name = generate_filename(file.filename)
-    file_data = await file.read()
-    if len(file_data) > max_size:
+    global temp_pdf
+    file_path = os.path.join(UPLOAD_DIR, f"{user_id}.pdf")
+    temp_pdf = io.BytesIO(await file.read())
+    if len(temp_pdf.getvalue()) > max_size:
         return {"error": "File size exceeds the maximum limit."}
-    # Save file data to Redis with user ID as key
-    redis_db.set(user_id, file_data)
-    background_tasks.add_task(process_file_upload, FileUpload(name=file.filename, size=len(file_data)))
+    with open(file_path, "wb") as pdf_file:
+        pdf_file.write(temp_pdf.getvalue())
+
+    # Set timer to delete file after 30 minutes of inactivity
+    def delete_file():
+        os.remove(file_path)
+    timer = threading.Timer(10 * 60, delete_file)
+    timer.start()
+
+    background_tasks.add_task(process_file_upload, FileUpload(name=file.filename, size=len(temp_pdf.getvalue())))
     return {"filename": file.filename}
+
+
 
 # Endpoint to ask a question based on the uploaded PDF
 @app.post("/question")
-def ask_question(question: str, user_id: str): #, current_user: UserInDB = Depends(get_current_active_user)
-    global temp_pdf
-    with get_openai_callback() as cb:
-    # Retrieve file data from Redis with user ID
-        file_data = redis_db.get(user_id)
-        if file_data is None:
-            return {"error": "File not found."}
-        qa = load_pdf(io.BytesIO(file_data))
-        answer = qa.run(question)
-        print(f"Total Tokens: {cb.total_tokens}")
-        print(f"Prompt Tokens: {cb.prompt_tokens}")
-        print(f"Completion Tokens: {cb.completion_tokens}")
-        print(f"Total Cost (USD): ${cb.total_cost}")
-        return {"answer": answer}
+def ask_question(question: str, user_id: str):
+    file_path = os.path.join(UPLOAD_DIR, f"{user_id}.pdf")
+    if not os.path.isfile(file_path):
+        return {"error": f"PDF file not found at {file_path}.pdf"}
+    qa = load_pdf(user_id)
+    answer = qa.run(question)
+    return {"answer": answer}
 
 # Create websocket
 async def send_message(websocket: WebSocket, message: str):
@@ -270,18 +259,39 @@ async def send_message(websocket: WebSocket, message: str):
 
 # Create websocket
 @app.websocket("/chat")
-async def websocket_endpoint(websocket: WebSocket):
+async def websocket_endpoint(websocket: WebSocket, user_id: str):
     try:
         await websocket.accept()
         print('Connection established, socket - ', websocket)
+        
+        # Set the inactivity timeout (in seconds)
+        inactivity_timeout = 300
+        
+        # Start the timer
+        async def timer():
+            while True:
+                await asyncio.sleep(inactivity_timeout)
+                try:
+                    await send_message(websocket, "Error: Inactivity timeout reached.")
+                    await websocket.close()
+                except:
+                    pass
+        
+        task = asyncio.create_task(timer())
+        
         while True:
             data = await websocket.receive_text()
-            answer = ask_question(data)["answer"]
-            await send_message(websocket, answer)
+            # Reset the timer on each incoming message
+            task.cancel()
+            task = asyncio.create_task(timer())
+            response = ask_question(data, user_id)
+            if "answer" in response:
+                await send_message(websocket, response["answer"])
+            else:
+                await send_message(websocket, "Error: " + response["error"])
     except WebSocketDisconnect as e:
         print('Connection closed.')
         print(e)
-
     
 if __name__ == "__main__":
     uvicorn.run(app, host="0.0.0.0", port=8000)

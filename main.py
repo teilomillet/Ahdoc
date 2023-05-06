@@ -15,6 +15,9 @@ import json
 import os
 import tempfile
 import io
+import threading
+import asyncio
+
 from io import BytesIO
 from typing import Optional
 from copy import copy
@@ -38,6 +41,7 @@ SECRET_KEY = "4f37c493e65289aed7abe7b0df5b807dbd8c4e6b5998e749e0a31cf9d355d255"
 ALGORITHM = "HS256"
 ACCESS_TOKEN_EXPIRE_MINUTES = 30
 
+UPLOAD_DIR = "data"
 
 db = {
     "test": {
@@ -56,6 +60,7 @@ room_list = []
 
 # Temporary file to store the uploaded PDF
 temp_pdf = io.BytesIO()
+
 
 # Pydantic models for input and output data
 class User(BaseModel):
@@ -189,8 +194,7 @@ def generate_filename(file_name):
     random_string = uuid.uuid4().hex
     return f"{file_name}-{timestamp}-{random_string}"
 
-UPLOAD_DIR = "data"
-
+@lru_cache(maxsize=1)
 def load_pdf(user_id):
     # Construct the path to the PDF file
     file_path = os.path.join(UPLOAD_DIR, f"{user_id}.pdf")
@@ -214,7 +218,6 @@ def load_pdf(user_id):
 
     return qa
 
-
 # Endpoint to upload a PDF file
 @app.post("/upload")
 async def upload_file(background_tasks: BackgroundTasks,
@@ -228,8 +231,16 @@ async def upload_file(background_tasks: BackgroundTasks,
         return {"error": "File size exceeds the maximum limit."}
     with open(file_path, "wb") as pdf_file:
         pdf_file.write(temp_pdf.getvalue())
+
+    # Set timer to delete file after 10 minutes of inactivity
+    def delete_file():
+        os.remove(file_path)
+    timer = threading.Timer(10 * 60, delete_file)
+    timer.start()
+
     background_tasks.add_task(process_file_upload, FileUpload(name=file.filename, size=len(temp_pdf.getvalue())))
     return {"filename": file.filename}
+
 
 
 # Endpoint to ask a question based on the uploaded PDF
@@ -252,8 +263,27 @@ async def websocket_endpoint(websocket: WebSocket, user_id: str):
     try:
         await websocket.accept()
         print('Connection established, socket - ', websocket)
+        
+        # Set the inactivity timeout (in seconds)
+        inactivity_timeout = 600
+        
+        # Start the timer
+        async def timer():
+            while True:
+                await asyncio.sleep(inactivity_timeout)
+                try:
+                    await send_message(websocket, "Error: Inactivity timeout reached.")
+                    await websocket.close()
+                except:
+                    pass
+        
+        task = asyncio.create_task(timer())
+        
         while True:
             data = await websocket.receive_text()
+            # Reset the timer on each incoming message
+            task.cancel()
+            task = asyncio.create_task(timer())
             response = ask_question(data, user_id)
             if "answer" in response:
                 await send_message(websocket, response["answer"])
