@@ -64,6 +64,7 @@ footer {
   right: 0;
   z-index: 9999;
   display: inline-block;
+  font-family: 'Roboto Mono', sans-serif;/* typo*/
 }
 
 .right-align {
@@ -457,6 +458,7 @@ h1 {
   padding: 20px;
   width: 400px;
   max-width: 90%; /* La largeur maximale est de 90% de la largeur de la fenêtre */
+  font-family: 'Roboto Mono', sans-serif;/* typo*/
   }
   
   
@@ -473,6 +475,7 @@ h1 {
   flex-direction: column;
   align-items: center;
   justify-content: center;
+  font-family: 'Roboto Mono', sans-serif;/* typo*/
 }
 
 
