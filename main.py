@@ -214,7 +214,7 @@ async def create_user(user: UserInCreate):
 
 async def upload_file(background_tasks: BackgroundTasks, 
                       file: UploadFile = File(...), 
-                      max_size: Optional[int] = 1000000): # , current_user: User = Depends(get_current_active_user)
+                      max_size: Optional[int] = 100000000): # , current_user: User = Depends(get_current_active_user)
     global temp_pdf
     file_name = generate_filename(file.filename)
     temp_pdf = io.BytesIO(await file.read())

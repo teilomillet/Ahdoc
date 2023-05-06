@@ -32,9 +32,6 @@ function uploadFile() {
   })
 }
 
-
-
-
 document.addEventListener("DOMContentLoaded", () => {
   const socket = new WebSocket("wss://ssl.ahdoc.chat/chat");
 
