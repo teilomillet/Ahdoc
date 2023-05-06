@@ -1,3 +1,7 @@
+// Generate a random user_id
+const user_id = Math.random().toString(36).substr(2, 9);
+console.log('User ID:', user_id);
+
 // pointer souris
 document.addEventListener('mousemove', function(e) {
 	var streak = document.createElement('div');
@@ -5,7 +9,6 @@ document.addEventListener('mousemove', function(e) {
 	streak.style.top = e.clientY + 'px';
 	streak.style.left = e.clientX + 'px';
 	document.body.appendChild(streak);
-
 
 	setTimeout(function() {
 		streak.remove();
@@ -20,6 +23,7 @@ function uploadFile() {
   const file = input.files[0];
   const formData = new FormData();
   formData.append("file", file, file.name);
+  formData.append("user_id", user_id);
   fetch("https://ssl.ahdoc.chat/upload", {
     mode: 'no-cors',
     method: "POST",
@@ -33,36 +37,36 @@ function uploadFile() {
 }
 
 document.addEventListener("DOMContentLoaded", () => {
-  const socket = new WebSocket("wss://ssl.ahdoc.chat/chat");
+  const socket = new WebSocket(`wss://ssl.ahdoc.chat/chat?user_id=${user_id}`);
 
-const questionForm = document.getElementById("question-form");
-const questionInput = document.getElementById("question");
-const questionBox = document.getElementById("question-box");
+  const questionForm = document.getElementById("question-form");
+  const questionInput = document.getElementById("question");
+  const questionBox = document.getElementById("question-box");
 
-questionForm.addEventListener("submit", event => {
-  event.preventDefault();
-  const message = questionInput.value.trim();
-  if (message) {
-    socket.send(message);
+  questionForm.addEventListener("submit", event => {
+    event.preventDefault();
+    const message = questionInput.value.trim();
+    if (message) {
+      socket.send(JSON.stringify({ user_id: user_id, message: message })); // Add user ID to the message
+      questionBox.insertAdjacentHTML(
+        "beforeend",
+        `<div class="message message-sent">
+          <p>${message}</p>
+        </div>`
+      );
+      questionInput.value = "";
+    }
+  });
+
+  socket.addEventListener("message", event => {
+    const data = JSON.parse(event.data);
+    const message = data.msg;
+    const user_id = data.user_id;
     questionBox.insertAdjacentHTML(
       "beforeend",
-      `<div class="message message-sent">
+      `<div class="message message-received">
         <p>${message}</p>
       </div>`
     );
-    questionInput.value = "";
-  }
+  });
 });
-
-socket.addEventListener("message", event => {
-  const message = JSON.parse(event.data).msg;
-  questionBox.insertAdjacentHTML(
-    "beforeend",
-    `<div class="message message-received">
-      <p>${message}</p>
-    </div>`
-  );
-});
-});
-
-

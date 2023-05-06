@@ -1,4 +1,4 @@
-from fastapi import FastAPI, File, UploadFile, BackgroundTasks, WebSocket, WebSocketDisconnect, Depends, HTTPException, status
+from fastapi import FastAPI, File, UploadFile, BackgroundTasks, WebSocket, WebSocketDisconnect, Depends, HTTPException, status, Form
 from fastapi.security import OAuth2PasswordBearer, OAuth2PasswordRequestForm
 from fastapi_limiter import FastAPILimiter
 from fastapi_limiter.depends import RateLimiter, WebSocketRateLimiter
@@ -6,6 +6,7 @@ from pydantic import BaseModel
 
 from jose import jwt, JWTError
 from passlib.context import CryptContext
+
 
 import uuid
 import time
@@ -26,7 +27,7 @@ from langchain.text_splitter import RecursiveCharacterTextSplitter
 from langchain.llms import OpenAI
 from langchain.chains import RetrievalQA
 from langchain.callbacks import get_openai_callback
-from langchain.document_loaders import PyPDFLoader
+from langchain.document_loaders import PyPDFLoader, UnstructuredPDFLoader, PyMuPDFLoader
 
 
 os.environ.update({
@@ -55,7 +56,6 @@ room_list = []
 
 # Temporary file to store the uploaded PDF
 temp_pdf = io.BytesIO()
-
 
 # Pydantic models for input and output data
 class User(BaseModel):
@@ -148,36 +148,6 @@ async def get_current_active_user(current_user: UserInDB = Depends(get_current_u
         raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail='Inactive user')
     return current_user
 
-
-# Background task to indicate that the file has been received
-def process_file_upload(upload: FileUpload) -> None:
-    print(f"Received file {upload.name} of size {upload.size} bytes")
-
-# Generate a unique filename based on timestamp and random string
-def generate_filename(file_name):
-    timestamp = int(time.time())
-    random_string = uuid.uuid4().hex
-    return f"{file_name}-{timestamp}-{random_string}"
-
-@lru_cache(maxsize=1)
-def load_pdf(file_name):
-    # Document loader
-    loader = PyPDFLoader(file_name)
-    documents = loader.load()
-
-    # Document splitter
-    text_splitter = RecursiveCharacterTextSplitter(chunk_size=1000, chunk_overlap=0)
-    texts = text_splitter.split_documents(documents)
-
-    # Create embeddings
-    embeddings = OpenAIEmbeddings()
-    vectordb = Chroma.from_documents(texts, embeddings)
-
-    # Create the chain
-    qa = RetrievalQA.from_chain_type(llm=OpenAI(), chain_type="stuff", retriever=vectordb.as_retriever(search_kwargs={"k": 1}))
-    return qa
-
-
 # Endpoint to upload token
 @app.post("/token", response_model=Token)
 async def login_for_access_token(data_form: OAuth2PasswordRequestForm = Depends()):
@@ -209,37 +179,68 @@ async def create_user(user: UserInCreate):
     db[user.username] = {"username": user.username, "hashed_password": hashed_password, "disabled": False}
     return UserOut(**db[user.username])
 
+# Background task to indicate that the file has been received
+def process_file_upload(upload: FileUpload) -> None:
+    print(f"Received file {upload.name} of size {upload.size} bytes")
+
+# Generate a unique filename based on timestamp and random string
+def generate_filename(file_name):
+    timestamp = int(time.time())
+    random_string = uuid.uuid4().hex
+    return f"{file_name}-{timestamp}-{random_string}"
+
+UPLOAD_DIR = "data"
+
+def load_pdf(user_id):
+    # Construct the path to the PDF file
+    file_path = os.path.join(UPLOAD_DIR, f"{user_id}.pdf")
+
+    # Load the document
+    loader = PyMuPDFLoader(file_path)
+    documents = loader.load()
+
+    # Document splitter
+    text_splitter = RecursiveCharacterTextSplitter(chunk_size=1000, chunk_overlap=0)
+    texts = text_splitter.split_documents(documents)
+
+    # Create embeddings
+    embeddings = OpenAIEmbeddings()
+    vectordb = Chroma.from_documents(texts, embeddings)
+
+    # Create the chain
+    llm = OpenAI()
+    retriever = vectordb.as_retriever()
+    qa = RetrievalQA.from_chain_type(llm=llm, chain_type="stuff", retriever=retriever)
+
+    return qa
+
+
 # Endpoint to upload a PDF file
 @app.post("/upload")
-
-async def upload_file(background_tasks: BackgroundTasks, 
-                      file: UploadFile = File(...), 
-                      max_size: Optional[int] = 100000000): # , current_user: User = Depends(get_current_active_user)
+async def upload_file(background_tasks: BackgroundTasks,
+                      file: UploadFile = File(...),
+                      max_size: Optional[int] = 100000000,
+                      user_id: str = Form(...)):
     global temp_pdf
-    file_name = generate_filename(file.filename)
+    file_path = os.path.join(UPLOAD_DIR, f"{user_id}.pdf")
     temp_pdf = io.BytesIO(await file.read())
     if len(temp_pdf.getvalue()) > max_size:
         return {"error": "File size exceeds the maximum limit."}
+    with open(file_path, "wb") as pdf_file:
+        pdf_file.write(temp_pdf.getvalue())
     background_tasks.add_task(process_file_upload, FileUpload(name=file.filename, size=len(temp_pdf.getvalue())))
     return {"filename": file.filename}
-    
+
 
 # Endpoint to ask a question based on the uploaded PDF
 @app.post("/question")
-def ask_question(question: str): #, current_user: UserInDB = Depends(get_current_active_user)
-    global temp_pdf
-    with get_openai_callback() as cb, BytesIO(temp_pdf.getvalue()) as pdf_file:
-        # Save the contents of the BytesIO object to a temporary file
-        temp_file = tempfile.NamedTemporaryFile(delete=False)
-        temp_file.write(pdf_file.read())
-        temp_file.close()
-        qa = load_pdf(temp_file.name)
-        answer = qa.run(question)
-        print(f"Total Tokens: {cb.total_tokens}")
-        print(f"Prompt Tokens: {cb.prompt_tokens}")
-        print(f"Completion Tokens: {cb.completion_tokens}")
-        print(f"Total Cost (USD): ${cb.total_cost}")
-        return {"answer": answer}
+def ask_question(question: str, user_id: str):
+    file_path = os.path.join(UPLOAD_DIR, f"{user_id}.pdf")
+    if not os.path.isfile(file_path):
+        return {"error": f"PDF file not found at {file_path}.pdf"}
+    qa = load_pdf(user_id)
+    answer = qa.run(question)
+    return {"answer": answer}
 
 # Create websocket
 async def send_message(websocket: WebSocket, message: str):
@@ -247,18 +248,20 @@ async def send_message(websocket: WebSocket, message: str):
 
 # Create websocket
 @app.websocket("/chat")
-async def websocket_endpoint(websocket: WebSocket):
+async def websocket_endpoint(websocket: WebSocket, user_id: str):
     try:
         await websocket.accept()
         print('Connection established, socket - ', websocket)
         while True:
             data = await websocket.receive_text()
-            answer = ask_question(data)["answer"]
-            await send_message(websocket, answer)
+            response = ask_question(data, user_id)
+            if "answer" in response:
+                await send_message(websocket, response["answer"])
+            else:
+                await send_message(websocket, "Error: " + response["error"])
     except WebSocketDisconnect as e:
         print('Connection closed.')
         print(e)
-
     
 if __name__ == "__main__":
     uvicorn.run(app, host="0.0.0.0", port=8000)
