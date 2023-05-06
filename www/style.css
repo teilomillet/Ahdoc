@@ -63,6 +63,7 @@ footer {
   left: 0;
   right: 0;
   z-index: 9999;
+  display: inline-block;
 }
 
 .right-align {
@@ -75,6 +76,14 @@ footer {
   padding-left: 400px;
   width: auto;
   white-space: nowrap;
+  line-height: 1;
+  
+  
+}
+
+.right-align a{
+  color: #333333;
+  margin-right: 2vh;
 }
 
 .pixel img {
@@ -424,37 +433,40 @@ h1 {
 }
 
 
+
+
+
 /* Page n1 entrée dans le site   */
 
 
-
-.presentation {
-  background-color: #eae4da; /* Couleur de fond */
-  border: 2px solid #333333; /* Bordure */
-  box-shadow: 4px 4px 0 #333333, 5px 5px 0 #333333, 8px 8px 0 #333333, 8px 8px 0 #333333;
-  border-radius: 12px; /* Coins arrondis */
-  padding: 20px; /* Espace intérieur */
-  font-family: 'Roboto Mono', sans-serif; /* Police de caractères */
-  font-size: 18px; /* Taille du texte */
-  line-height: 1.5; /* Interligne */
-  margin-top: 120px;
-  margin-left: 180px;
-  width: 60%;
-
-
-}
-
-.presentation p {
-  margin-bottom: 20px; /* Ajoute une marge de 20 pixels en bas de chaque paragraphe */
-}
-
-
-.container4 {
-  margin-top: 100px;
-  margin-left: 180px;
+.code-acces {
+  
+  position: absolute;
+  top: 25%;
+  left: 50%;
+  transform: translate(-50%, -50%);
   line-height: 2.5;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  background-color: #eae4da;
+  border: 2px solid #333333;
+  box-shadow: 4px 4px 0 #333333, 5px 5px 0 #333333, 8px 8px 0 #333333, 8px 8px 0 #333333;
+  border-radius: 12px;
+  padding: 20px;
+  width: 400px;
+  max-width: 90%; /* La largeur maximale est de 90% de la largeur de la fenêtre */
+  }
+  
+  
+.code-acces img {
+  width: 15vh;
+  height: 15vh;
+  border-radius: 50%;
+  margin-bottom: 10px;
+  }
 
-}
 
 .form {
   display: inline;
@@ -475,23 +487,18 @@ input {
 
 
 #codeForm input[type="text"] {
-  width: 20%;
+  width: 60%;
   padding: 10px;
   border-radius: 12px;
   border: 3px solid #ccc;
   margin-bottom: 20px;
+  align-items: center;
+  justify-content: center;
+  display: inline
   
 }
 
-#login-button3 {
-  background-color: #afc4e8;
-  color: #333333;
-  padding: 10px 20px;
-  border: 3px solid #333333;
-  border-radius: 12px;
-  cursor: pointer;
-  font-family: 'Roboto Mono', sans-serif;
-}
+
 
 #login-button2 {
   background-color: #afc4e8;
@@ -510,4 +517,27 @@ input {
 
 #login-button2:hover {
   background-color: #e37047;
+}
+
+
+.presentation {
+  font-family: 'Roboto Mono', sans-serif; /* Police de caractères */
+  font-size: 18px; /* Taille du texte */
+  line-height: 1.5; /* Interligne */
+  position: absolute;
+  top: 65%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 90%;
+  max-width: 800px;
+  margin-top: 40px;
+}
+  
+
+
+.presentation p {
+  margin-bottom: 2vh; /* Ajoute une marge de 20 pixels en bas de chaque paragraphe */
+  margin-top: 1vh;
+  text-align: center;
+  
 }
