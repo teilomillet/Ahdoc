@@ -29,7 +29,7 @@ function uploadFile() {
     method: "POST",
     body: formData
   })
-  .then(console.log('send.'), console.log('not send.'))
+  .then(console.log('file send.'))
   .then(data => {
     console.log(data);
     // Do something with the response data
@@ -61,7 +61,7 @@ document.addEventListener("DOMContentLoaded", () => {
   socket.addEventListener("message", event => {
     const data = JSON.parse(event.data);
     const message = data.msg;
-    const user_id = data.user_id;
+    const received_user_id = data.user_id;
     questionBox.insertAdjacentHTML(
       "beforeend",
       `<div class="message message-received">
