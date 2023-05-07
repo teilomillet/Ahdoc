@@ -63,8 +63,8 @@ footer {
   left: 0;
   right: 0;
   z-index: 9999;
-  display: inline-block;
   font-family: 'Roboto Mono', sans-serif;/* typo*/
+  
 }
 
 .right-align {
@@ -78,6 +78,7 @@ footer {
   width: auto;
   white-space: nowrap;
   line-height: 1;
+  
   
   
 }
@@ -96,20 +97,18 @@ footer {
 body {
   font-family: 'Roboto Mono', sans-serif;
   background-color: #eae4da;
-  overflow: hidden;
   min-height: auto;
  }
 
 /* bouton pour envoyer le fichier pdf - index */
 /* Conteneur du uploader + chatbox */
-.file-container {
-  display: block;
+.file-upload-container {
+  
   height: auto;
   width: auto;
   padding-top: 10vh;
-  margin-left: auto;
-  margin-right: auto;
-  padding-bottom: 9vh;
+  margin-top: 3vh;
+  padding-bottom: 5vh;
   padding-left: 3vh;
   padding-right: 3vh;
 
@@ -119,34 +118,41 @@ body {
   padding-right: 3vh;
 }
 
-.file-uploader button {
-  background-color: #e37047; /* couleur de fond */
-  color: #333333; /* couleur du texte */
-   padding: 10px 20px;
-  border: 3px solid #333333; /* ajout bordure */
-  border-radius: 12px; /* arrondi des coins */
-  cursor: pointer; /* curseur au survol */
-  font-size: 12px; /* taille de la police */
-  width: 150px; /* Modifier la valeur pour ajuster la largeur*/
-  font-family: 'Roboto Mono', sans-serif;/* typo*/
-  font-weight: 400; /* graisse typo*/
-  margin-top: 0px;
-}
-
-.form-container1 button:hover {
+.file-upload-label {
+  display: inline-block;
   background-color: #afc4e8;
+  color: #333333;
+  padding: 8px 20px;
+  border-radius: 12px;
+  border: 3px solid #333333;
+  width: 20vh;
+
+  cursor: pointer;
 }
 
+.file-upload-label:hover {
+  background-color: #7398d8;
+}
 
+.file-upload-input {
+  position: absolute;
+  left: 0;
+  top: 0;
+  opacity: 0;
+  cursor: pointer;
+}
+
+/* chatbox */
 .chat-container {
   max-width: auto;
   max-height: auto;
   height: auto;
   margin: 0 auto;
   display: flex;
+  width: 80%;
 }
 
-/* chatbox */
+
 .chat-box {
   border: 3px solid #333333;
   border-radius: 12px;
@@ -193,7 +199,8 @@ color: #333333;
 cursor: pointer;
 padding: 10px;
 transition: background-color 0.2s ease;
-width: 20%;
+min-width: 12vh;
+width: auto;
 font-family: 'Roboto Mono', sans-serif;
 position: relative;
 }
@@ -210,8 +217,8 @@ color: #fff;
 .message-box {
 border: 3px solid #333333;
 border-radius: 12px;
-background-color: #f0fbfe7a;
-height: 48vh;
+background-color: #f2f2f2;
+height: 45vh;
 min-height: 20vh;
 max-height: 60vh;
 overflow-y: scroll;

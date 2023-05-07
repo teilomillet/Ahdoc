@@ -1,16 +1,16 @@
 <!DOCTYPE html>
 <html>
-<script src="main.js"></script>
 <head>
   <title>AhDoc</title>
   <link rel="stylesheet" type="text/css" href="style.css">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@200;500;600;700&display=swap" rel="stylesheet">
   <meta charset="UTF-8">
+  <script src="main.js"></script>
 </head>
 
 <body>
-  <header>
+<header>
     <div class="container">
       <div class="logo">
         <img> <a href="index.html"><img src="img/logo-10.png" alt="logo"></a>
@@ -24,41 +24,44 @@
         </ul>
       </nav>
     </div>
-  </header>
-
+</header>
 
   
-  <div class="file-container">
-    <div class="file-uploader">
-      <form enctype="multipart/form-data">
-        <label for="pdfFile">Fichier PDF à résumer :</label><br>
-        <input type="file" accept="application/pdf" id="file" name="file" class="input-box">
-        <button type="button-telecharger" onclick="uploadFile()">Télécharger</button>
-      </form>
-    </div>
+  <div class="file-upload-container">
+      <div class="file-upload">
+        <label for="file-upload" class="file-upload-label">
+          <i class="fa fa-cloud-upload"></i> Télécharger un fichier PDF
+        </label>
+        <input type="file" accept="application/pdf" id="file-upload" name="file-upload" class="file-upload-input">
+      </div>
+    
+    
 
-  <div class="chat-container">
-    <div class="chat-box">
-      <main class="chat-history">
-        <div class="message-box" id="question-box">
-        </div>
-        <form id="question-form" class="chat-form">
-          <label for="question" class="sr-only">Commencer à dialoguer</label>
-          <div class="input-question">
-            <input type="text" id="question"
-              class="form-input"
-              placeholder="Entrer votre message...">
-            <button type="submit" class="form-btn">Envoyer</button>
-
+    <div class="chat-container">
+      <div class="chat-box">
+        <main class="chat-history">
+          <div class="message-box" id="question-box">
           </div>
-        </form>
-      </main>
+          <form id="question-form" class="chat-form">
+            <label for="question" class="sr-only">Commencer à dialoguer</label>
+            <div class="input-question">
+              <input type="text" id="question"
+                class="form-input"
+                placeholder="Entrer votre message...">
+              <button type="submit" class="form-btn">Envoyer</button>
+
+            </div>
+          </form>
+        </main>
+      </div>
     </div>
   </div>
+
+
     
- 
-    </div>
-  <footer>
+<footer >
+
+
     <div class="footer">
         <div class="right-align">
             <p> © Tous droits réservés</p>  
@@ -68,8 +71,8 @@
         </div>
     </div>
         
-  </footer>
-  <script src="main.js"></script>
+</footer>
 </body>
+
 </html>
 
