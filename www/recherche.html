@@ -26,17 +26,19 @@
     </div>
 </header>
 
-  
-  <div class="file-upload-container">
-      <div class="file-upload">
-        <label for="file-upload" class="file-upload-label">
-          <i class="fa fa-cloud-upload"></i> Télécharger un fichier PDF
-        </label>
-        <input type="file" accept="application/pdf" id="file-upload" name="file-upload" class="file-upload-input">
-      </div>
-    
-    
 
+
+  <div class="file-container">
+    <div class="file-uploader">
+      <form enctype="multipart/form-data">
+        <label for="pdfFile">Fichier PDF à résumer :</label><br>
+        <input type="file" accept="application/pdf" id="file" name="file" class="input-box">
+        <button type="button-telecharger" onclick="uploadFile()">Télécharger</button>
+      </form>
+    </div>
+
+    
+    
     <div class="chat-container">
       <div class="chat-box">
         <main class="chat-history">
